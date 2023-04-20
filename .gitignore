@@ -2,6 +2,7 @@
 /**/.vscode/*
 /**/build/*
 /**/Web/*
+/**/Bin/*
 /**/.vs/*
 /**/Debug/*
 /**/CMakeFiles/*
