@@ -11,10 +11,21 @@ namespace ToolKit
 
       void Update(float deltaTime);
 
+      void SetPlayerSpeed(float speed);
+
     private:
       PlayerController() {}
 
+      void GetInputs();
+      void MovePlayer(float deltaTime);
+
     private:
       Entity* m_player = nullptr;
+
+      bool m_moveUp = false;
+      bool m_moveDown = false;
+      bool m_moveRight = false;
+      bool m_moveLeft = false;
+      float m_playerSpeed = 0.1f;
   };
 }

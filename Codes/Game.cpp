@@ -12,11 +12,14 @@ namespace ToolKit
   {
     Main::SetProxy(master);
 
+    // Scene
     m_mainScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
     GetSceneManager()->SetCurrentScene(m_mainScene);
 
+    // Camera attached to the player
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
-    
+
+    // Player and player controller
     Entity* player = GetSceneManager()->GetCurrentScene()->GetFirstByTag("player");
     m_playerController = new PlayerController(player);
   }
@@ -32,6 +35,7 @@ namespace ToolKit
   {
     viewport->AttachCamera(m_mainCam->GetIdVal());
 
+    // Update player controller
     m_playerController->Update(deltaTime);
 
 #ifdef __EMSCRIPTEN__
