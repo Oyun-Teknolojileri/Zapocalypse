@@ -1,0 +1,5 @@
+
+[ ] WASD player controls
+[ ] shooting controls (top-down shooter)
+[ ] shoot enemies
+[ ] enemy ai

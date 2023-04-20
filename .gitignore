@@ -1,0 +1,9 @@
+# Workspace wide ignores
+/**/.vscode/*
+/**/build/*
+/**/Web/*
+/**/.vs/*
+/**/Debug/*
+/**/CMakeFiles/*
+/**/workspace.settings
+/**/Editor.settings
