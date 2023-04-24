@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-set(PROJECT_NAME "__tkdir__" CACHE STRING "What is the project name ?")
-set(TOOLKIT_DIR "D:/ToolKit" CACHE FILEPATH "Where is the ToolKit source directory ?")
+set(PROJECT_NAME "Zapocalypse" CACHE STRING "What is the project name ?")
+set(TOOLKIT_DIR "__tkdir__" CACHE FILEPATH "Where is the ToolKit source directory ?")
 
 if (EMSCRIPTEN)
 	set(WEB_BUILD TRUE)
