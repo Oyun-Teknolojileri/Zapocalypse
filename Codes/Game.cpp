@@ -22,6 +22,7 @@ namespace ToolKit
     // Player and player controller
     Entity* player = GetSceneManager()->GetCurrentScene()->GetFirstByTag("player");
     m_playerController = new PlayerController(player);
+    m_playerController->Init();
   }
 
   void Game::Destroy()
