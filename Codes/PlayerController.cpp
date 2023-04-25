@@ -2,96 +2,116 @@
 
 namespace ToolKit
 {
-  void PlayerController::Update(float deltaTime)
-  {
-    GetInputs();
+  String PlayerState::Null = "";
+  String PlayerState::Idle = "Idle";
+  String PlayerState::Walk = "Walk";
 
-    MovePlayer(deltaTime);
+  void PlayerIdleState::TransitionIn(State* prevState)
+  {
+    PlayerBaseState::TransitionIn(prevState);
   }
 
-  void PlayerController::GetInputs()
+  void PlayerIdleState::TransitionOut(State* nextState)
   {
-    EventPool& events = Main::GetInstance()->m_eventPool;
-    for (Event* event : events)
+    PlayerBaseState::TransitionOut(nextState);
+  }
+
+  SignalId PlayerIdleState::Update(float deltaTime)
+  {
+    if (m_playerController->IsPlayerMoving())
     {
-      if (event->m_type == Event::EventType::Keyboard)
-      {
-        KeyboardEvent* ke = static_cast<KeyboardEvent*>(event);
-
-        if (ke->m_action == EventAction::KeyDown)
-        {
-          if (ke->m_keyCode == 'w')
-          {
-            m_moveUp = true;
-          }
-          else if (ke->m_keyCode == 's')
-          {
-            m_moveDown = true;
-          }
-          else if (ke->m_keyCode == 'a')
-          {
-            m_moveLeft = true;
-          }
-          else if (ke->m_keyCode == 'd')
-          {
-            m_moveRight = true;
-          }
-        }
-
-        if (ke->m_action == EventAction::KeyUp)
-        {
-          if (ke->m_keyCode == 'w')
-          {
-            m_moveUp = false;
-          }
-          else if (ke->m_keyCode == 's')
-          {
-            m_moveDown = false;
-          }
-          else if (ke->m_keyCode == 'a')
-          {
-            m_moveLeft = false;
-          }
-          else if (ke->m_keyCode == 'd')
-          {
-            m_moveRight = false;
-          }
-        }
-      }
+      return PlayerSignal::Move;
     }
+
+    return NullSignal;
   }
 
-  void PlayerController::MovePlayer(float deltaTime)
+  String PlayerIdleState::Signaled(SignalId signal)
   {
-    const float speed = deltaTime * m_playerSpeed;
+    if (signal == PlayerSignal::Move)
+    {
+      return PlayerState::Walk;
+    }
+    
+    return PlayerState::Null;
+  }
+
+  void PlayerWalkState::TransitionIn(State* prevState)
+  {
+    PlayerBaseState::TransitionIn(prevState);
+  }
+
+  void PlayerWalkState::TransitionOut(State* nextState)
+  {
+    PlayerBaseState::TransitionOut(nextState);
+  }
+
+  SignalId PlayerWalkState::Update(float deltaTime)
+  {
+    if (!m_playerController->IsPlayerMoving())
+    {
+      return PlayerSignal::Stop;
+    }
+
+    // Player movement
+
+    const float speed = deltaTime * m_playerController->m_playerWalkSpeed;
     static const Vec3 up = glm::normalize(Vec3(-1.0f, 0.0f, -1.0f));
     static const Vec3 down = glm::normalize(Vec3(1.0f, 0.0f, 1.0f));
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
     static const Vec3 right = glm::normalize(Vec3(1.0f, 0.0f, -1.0f));
 
-    if (m_moveUp)
+    if (m_inputManager->WDown())
     {
-      m_player->m_node->Translate(speed * up);
+      m_playerController->m_player->m_node->Translate(speed * up);
     }
 
-    if (m_moveDown)
+    if (m_inputManager->SDown())
     {
-      m_player->m_node->Translate(speed * down);
+      m_playerController->m_player->m_node->Translate(speed * down);
     }
 
-    if (m_moveLeft)
+    if (m_inputManager->ADown())
     {
-      m_player->m_node->Translate(speed * left);
+      m_playerController->m_player->m_node->Translate(speed * left);
     }
 
-    if (m_moveRight)
+    if (m_inputManager->DDown())
     {
-      m_player->m_node->Translate(speed * right);
+      m_playerController->m_player->m_node->Translate(speed * right);
     }
+
+    return NullSignal;
   }
-  
-  void PlayerController::SetPlayerSpeed(float speed)
+
+  String PlayerWalkState::Signaled(SignalId signal)
   {
-    m_playerSpeed = speed;
+    if (signal == PlayerSignal::Stop)
+    {
+      return PlayerState::Idle;
+    }
+
+    return PlayerState::Null;
+  }
+
+  void PlayerController::Init()
+  {
+    PlayerIdleState* idleState = new PlayerIdleState();
+    idleState->m_playerController = this;
+    idleState->m_inputManager = m_inputManager;
+    m_stateMachine.PushState(idleState);
+
+    PlayerWalkState* walkState = new PlayerWalkState();
+    walkState->m_playerController = this;
+    walkState->m_inputManager = m_inputManager;
+    m_stateMachine.PushState(walkState);
+
+    // Start with idle state
+    m_stateMachine.m_currentState = idleState;
+  }
+
+  void PlayerController::Update(float deltaTime)
+  {
+    m_stateMachine.Update(deltaTime);
   }
 }

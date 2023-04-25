@@ -4,6 +4,7 @@
 #include "Plugin.h"
 #include "SceneRenderer.h"
 #include "PlayerController.h"
+#include "InputManager.h"
 
 namespace ToolKit
 {
@@ -22,6 +23,8 @@ namespace ToolKit
 
     ScenePtr m_mainScene = nullptr;
     Entity* m_mainCam = nullptr;
+
+    InputManager* m_inputManager = nullptr;
     PlayerController* m_playerController = nullptr;
   };
 
