@@ -88,7 +88,7 @@ namespace ToolKit
   {
     if (signal == PlayerSignal::Stop)
     {
-      return PlayerState::Walk;
+      return PlayerState::Idle;
     }
 
     return PlayerState::Null;
