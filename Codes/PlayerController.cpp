@@ -61,22 +61,22 @@ namespace ToolKit
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
     static const Vec3 right = glm::normalize(Vec3(1.0f, 0.0f, -1.0f));
 
-    if (m_playerController->MoveUp())
+    if (m_inputManager->WDown())
     {
       m_playerController->m_player->m_node->Translate(speed * up);
     }
 
-    if (m_playerController->MoveDown())
+    if (m_inputManager->SDown())
     {
       m_playerController->m_player->m_node->Translate(speed * down);
     }
 
-    if (m_playerController->MoveLeft())
+    if (m_inputManager->ADown())
     {
       m_playerController->m_player->m_node->Translate(speed * left);
     }
 
-    if (m_playerController->MoveRight())
+    if (m_inputManager->DDown())
     {
       m_playerController->m_player->m_node->Translate(speed * right);
     }
@@ -98,10 +98,12 @@ namespace ToolKit
   {
     PlayerIdleState* idleState = new PlayerIdleState();
     idleState->m_playerController = this;
+    idleState->m_inputManager = m_inputManager;
     m_stateMachine.PushState(idleState);
 
     PlayerWalkState* walkState = new PlayerWalkState();
     walkState->m_playerController = this;
+    walkState->m_inputManager = m_inputManager;
     m_stateMachine.PushState(walkState);
 
     // Start with idle state
@@ -110,60 +112,6 @@ namespace ToolKit
 
   void PlayerController::Update(float deltaTime)
   {
-    GetInputs();
-
     m_stateMachine.Update(deltaTime);
-  }
-
-  void PlayerController::GetInputs()
-  {
-    EventPool& events = Main::GetInstance()->m_eventPool;
-    for (Event* event : events)
-    {
-      if (event->m_type == Event::EventType::Keyboard)
-      {
-        KeyboardEvent* ke = static_cast<KeyboardEvent*>(event);
-
-        if (ke->m_action == EventAction::KeyDown)
-        {
-          if (ke->m_keyCode == 'w')
-          {
-            m_moveUp = true;
-          }
-          else if (ke->m_keyCode == 's')
-          {
-            m_moveDown = true;
-          }
-          else if (ke->m_keyCode == 'a')
-          {
-            m_moveLeft = true;
-          }
-          else if (ke->m_keyCode == 'd')
-          {
-            m_moveRight = true;
-          }
-        }
-
-        if (ke->m_action == EventAction::KeyUp)
-        {
-          if (ke->m_keyCode == 'w')
-          {
-            m_moveUp = false;
-          }
-          else if (ke->m_keyCode == 's')
-          {
-            m_moveDown = false;
-          }
-          else if (ke->m_keyCode == 'a')
-          {
-            m_moveLeft = false;
-          }
-          else if (ke->m_keyCode == 'd')
-          {
-            m_moveRight = false;
-          }
-        }
-      }
-    }
   }
 }

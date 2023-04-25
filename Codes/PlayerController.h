@@ -1,6 +1,7 @@
 #pragma once
 #include "ToolKit.h"
 #include "StateMachine.h"
+#include "InputManager.h"
 
 namespace ToolKit
 {
@@ -29,6 +30,7 @@ namespace ToolKit
 
    public:
     class PlayerController* m_playerController = nullptr;
+    InputManager* m_inputManager = nullptr;
   };
 
   class PlayerIdleState : public PlayerBaseState
@@ -60,49 +62,26 @@ namespace ToolKit
   class PlayerController
   {
      public:
-      PlayerController(Entity* player) : m_player(player) {}
+      PlayerController(Entity* player, InputManager* inputManager) : m_player(player), m_inputManager(inputManager) {}
       ~PlayerController() {}
 
       void Init();
       void Update(float deltaTime);
 
-      inline bool MoveUp()
-      {
-        return m_moveUp;
-      }
-      inline bool MoveDown()
-      {
-        return m_moveDown;
-      }
-      inline bool MoveLeft()
-      {
-        return m_moveLeft;
-      }
-      inline bool MoveRight()
-      {
-        return m_moveRight;
-      }
       inline bool IsPlayerMoving()
       {
-        return m_moveUp || m_moveDown || m_moveLeft || m_moveRight;
+        return m_inputManager->WDown() || m_inputManager->SDown() || m_inputManager->ADown() || m_inputManager->DDown();
       }
 
      private:
       PlayerController() {}
 
-      void GetInputs();
-
      public:
       StateMachine m_stateMachine;
 
       Entity* m_player = nullptr;
+      InputManager* m_inputManager = nullptr;
 
       float m_playerWalkSpeed = 0.1f;
-
-     private:
-      bool m_moveUp = false;
-      bool m_moveDown = false;
-      bool m_moveRight = false;
-      bool m_moveLeft = false;
   };
 }

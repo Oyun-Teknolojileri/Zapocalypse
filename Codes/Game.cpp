@@ -19,9 +19,12 @@ namespace ToolKit
     // Camera attached to the player
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
 
+    // Input manager
+    m_inputManager = new InputManager();
+
     // Player and player controller
     Entity* player = GetSceneManager()->GetCurrentScene()->GetFirstByTag("player");
-    m_playerController = new PlayerController(player);
+    m_playerController = new PlayerController(player, m_inputManager);
     m_playerController->Init();
   }
 
@@ -34,6 +37,8 @@ namespace ToolKit
 
   void Game::Frame(float deltaTime, class Viewport* viewport)
   {
+    m_inputManager->Update();
+
     viewport->AttachCamera(m_mainCam->GetIdVal());
 
     // Update player controller

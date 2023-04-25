@@ -47,6 +47,7 @@ set(
 	SOURCE 
 	Game.cpp
 	PlayerController.cpp
+	InputManager.cpp
 )
 
 if (${WEB_BUILD})
@@ -57,6 +58,7 @@ set(
 	HEADERS 
 	Game.h
 	PlayerController.h
+	InputManager.h
 )
 
 set(
