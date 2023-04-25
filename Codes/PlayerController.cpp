@@ -63,22 +63,22 @@ namespace ToolKit
 
     if (m_inputManager->WDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * up);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * up);
     }
 
     if (m_inputManager->SDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * down);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * down);
     }
 
     if (m_inputManager->ADown())
     {
-      m_playerController->m_player->m_node->Translate(speed * left);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * left);
     }
 
     if (m_inputManager->DDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * right);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * right);
     }
 
     return NullSignal;

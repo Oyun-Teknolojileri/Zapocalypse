@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "DirectionComponent.h"
 
 extern "C" TK_GAME_API ToolKit::Game * TK_STDCAL CreateInstance()
 {
@@ -16,20 +17,27 @@ namespace ToolKit
     m_mainScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
     GetSceneManager()->SetCurrentScene(m_mainScene);
 
-    // Camera attached to the player
-    m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
-
     // Input manager
     m_inputManager = new InputManager();
 
-    // Player and player controller
-    Entity* player = GetSceneManager()->GetCurrentScene()->GetFirstByTag("player");
-    m_playerController = new PlayerController(player, m_inputManager);
+    // Player prefab
+    Entity* playerPrefab = GetSceneManager()->GetCurrentScene()->GetFirstByTag("playerPrefab");
+    playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
+
+    // Player controller
+    m_playerController = new PlayerController(playerPrefab, m_inputManager);
     m_playerController->Init();
+
+    // Attach the camera to the player prefab
+    m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
+    playerPrefab->m_node->AddChild(m_mainCam->m_node, true);
   }
 
   void Game::Destroy()
   {
+    // Remove direction component from player
+    m_playerController->m_playerPrefab->RemoveComponent(m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->m_id);
+
     SafeDel(m_playerController);
 
     delete this;

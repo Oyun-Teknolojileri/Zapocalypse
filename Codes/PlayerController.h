@@ -62,7 +62,7 @@ namespace ToolKit
   class PlayerController
   {
      public:
-      PlayerController(Entity* player, InputManager* inputManager) : m_player(player), m_inputManager(inputManager) {}
+      PlayerController(Entity* playerPrefab, InputManager* inputManager) : m_playerPrefab(playerPrefab), m_inputManager(inputManager) {}
       ~PlayerController() {}
 
       void Init();
@@ -79,7 +79,7 @@ namespace ToolKit
      public:
       StateMachine m_stateMachine;
 
-      Entity* m_player = nullptr;
+      Entity* m_playerPrefab = nullptr;
       InputManager* m_inputManager = nullptr;
 
       float m_playerWalkSpeed = 0.1f;
