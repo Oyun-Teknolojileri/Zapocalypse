@@ -26,11 +26,16 @@ namespace ToolKit
     {
       return m_dDown;
     }
+    inline bool LeftMouseDown()
+    {
+      return m_leftMouseDown;
+    }
 
     private:
     bool m_wDown = false;
     bool m_sDown = false;
     bool m_aDown = false;
     bool m_dDown = false;
+    bool m_leftMouseDown = false;
   };
 }

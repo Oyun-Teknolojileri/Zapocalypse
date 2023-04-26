@@ -51,6 +51,18 @@ namespace ToolKit
           }
         }
       }
+      else if (event->m_action == EventAction::LeftClick)
+      {
+        MouseEvent *me = static_cast<MouseEvent *>(event);
+        if (!me->m_release)
+        {
+          m_leftMouseDown = true;
+        }
+        else
+        {
+          m_leftMouseDown = false;
+        }
+      }
     }
   }
 }
