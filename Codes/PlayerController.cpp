@@ -2,55 +2,35 @@
 
 namespace ToolKit
 {
-  String PlayerState::Null = "";
-  String PlayerState::Idle = "Idle";
-  String PlayerState::Walk = "Walk";
+  String MovementState::Null = "";
+  String MovementState::Stationary = "Stationary";
+  String MovementState::Walk = "Walk";
 
-  void PlayerIdleState::TransitionIn(State* prevState)
-  {
-    PlayerBaseState::TransitionIn(prevState);
-  }
-
-  void PlayerIdleState::TransitionOut(State* nextState)
-  {
-    PlayerBaseState::TransitionOut(nextState);
-  }
-
-  SignalId PlayerIdleState::Update(float deltaTime)
+  SignalId StationaryState::Update(float deltaTime)
   {
     if (m_playerController->IsPlayerMoving())
     {
-      return PlayerSignal::Move;
+      return MovementSignal::Move;
     }
 
     return NullSignal;
   }
 
-  String PlayerIdleState::Signaled(SignalId signal)
+  String StationaryState::Signaled(SignalId signal)
   {
-    if (signal == PlayerSignal::Move)
+    if (signal == MovementSignal::Move)
     {
-      return PlayerState::Walk;
+      return MovementState::Walk;
     }
     
-    return PlayerState::Null;
+    return MovementState::Null;
   }
 
-  void PlayerWalkState::TransitionIn(State* prevState)
-  {
-    PlayerBaseState::TransitionIn(prevState);
-  }
-
-  void PlayerWalkState::TransitionOut(State* nextState)
-  {
-    PlayerBaseState::TransitionOut(nextState);
-  }
-
-  SignalId PlayerWalkState::Update(float deltaTime)
+  SignalId WalkState::Update(float deltaTime)
   {
     if (!m_playerController->IsPlayerMoving())
     {
-      return PlayerSignal::Stop;
+      return MovementSignal::Stop;
     }
 
     // Player movement
@@ -63,55 +43,122 @@ namespace ToolKit
 
     if (m_inputManager->WDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * up);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * up);
     }
 
     if (m_inputManager->SDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * down);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * down);
     }
 
     if (m_inputManager->ADown())
     {
-      m_playerController->m_player->m_node->Translate(speed * left);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * left);
     }
 
     if (m_inputManager->DDown())
     {
-      m_playerController->m_player->m_node->Translate(speed * right);
+      m_playerController->m_playerPrefab->m_node->Translate(speed * right);
     }
 
     return NullSignal;
   }
 
-  String PlayerWalkState::Signaled(SignalId signal)
+  String WalkState::Signaled(SignalId signal)
   {
-    if (signal == PlayerSignal::Stop)
+    if (signal == MovementSignal::Stop)
     {
-      return PlayerState::Idle;
+      return MovementState::Stationary;
     }
 
-    return PlayerState::Null;
+    return MovementState::Null;
+  }
+
+  String CombatState::Null = "";
+  String CombatState::Hold = "Hold";
+  String CombatState::Shoot = "Shoot";
+  // TODO String CombatState::Reload;
+
+  SignalId HoldState::Update(float deltaTime)
+  {
+    if (m_playerController->IsPlayerTryingToShoot())
+    {
+      return CombatSignal::Shoot;
+    }
+
+    return NullSignal;
+  }
+
+  String HoldState::Signaled(SignalId signal)
+  {
+    if (signal == CombatSignal::Shoot)
+    {
+      return CombatState::Shoot;
+    }
+
+    return CombatState::Null;
+  }
+
+  SignalId ShootState::Update(float deltaTime)
+  {
+    if (!m_playerController->IsPlayerTryingToShoot())
+    {
+      return CombatSignal::Hold;
+    }
+
+    // TODO
+    // Create a projectile class
+    // Updates every frame
+    // Shoot that projectile here
+    // Shoot projectile based on rate of fire (how to shoot between frames for rate of fires that are not divisible with framerate?)
+
+    return NullSignal;
+  }
+
+  String ShootState::Signaled(SignalId signal)
+  {
+    if (signal == CombatSignal::Hold)
+    {
+      return CombatState::Hold;
+    }
+
+    return CombatState::Null;
   }
 
   void PlayerController::Init()
   {
-    PlayerIdleState* idleState = new PlayerIdleState();
-    idleState->m_playerController = this;
-    idleState->m_inputManager = m_inputManager;
-    m_stateMachine.PushState(idleState);
+    // movement states
+    StationaryState* stationaryState = new StationaryState();
+    stationaryState->m_playerController = this;
+    stationaryState->m_inputManager = m_inputManager;
+    m_movementStateMachine.PushState(stationaryState);
 
-    PlayerWalkState* walkState = new PlayerWalkState();
+    WalkState* walkState = new WalkState();
     walkState->m_playerController = this;
     walkState->m_inputManager = m_inputManager;
-    m_stateMachine.PushState(walkState);
+    m_movementStateMachine.PushState(walkState);
 
-    // Start with idle state
-    m_stateMachine.m_currentState = idleState;
+    // Start with stationary state
+    m_movementStateMachine.m_currentState = stationaryState;
+
+    // combat states
+    HoldState* holdState = new HoldState();
+    holdState->m_playerController = this;
+    holdState->m_inputManager = m_inputManager;
+    m_combatStateMachine.PushState(holdState);
+
+    ShootState* shootState = new ShootState();
+    shootState->m_playerController = this;
+    shootState->m_inputManager = m_inputManager;
+    m_combatStateMachine.PushState(shootState);
+
+    // Start with hold state
+    m_combatStateMachine.m_currentState = holdState;
   }
 
   void PlayerController::Update(float deltaTime)
   {
-    m_stateMachine.Update(deltaTime);
+    m_combatStateMachine.Update(deltaTime);
+    m_movementStateMachine.Update(deltaTime);
   }
 }

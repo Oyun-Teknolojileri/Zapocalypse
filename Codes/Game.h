@@ -5,6 +5,7 @@
 #include "SceneRenderer.h"
 #include "PlayerController.h"
 #include "InputManager.h"
+#include "ProjectileManager.h"
 
 namespace ToolKit
 {
@@ -26,8 +27,8 @@ namespace ToolKit
 
     InputManager* m_inputManager = nullptr;
     PlayerController* m_playerController = nullptr;
+    ProjectileManager* m_projectileManager = nullptr;
   };
-
 }
 
 extern "C" TK_GAME_API ToolKit::Game * TK_STDCAL CreateInstance();
