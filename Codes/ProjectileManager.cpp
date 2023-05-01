@@ -140,7 +140,11 @@ namespace ToolKit
 
   void ProjectileManager::RemoveProjectile(unsigned index)
   {
-    m_projectilePool[index].active = false;
+    Projectile& projectile = m_projectilePool[index];
+    projectile.active = false;
+    projectile.nextAvailableProjectileIndex = m_availableProjectileIndex;
+    m_availableProjectileIndex = index;
+
     // Remove projectile from scene
     m_scene->RemoveEntity(m_projectilePool[index].entity->GetIdVal());
   }
