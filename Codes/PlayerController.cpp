@@ -123,7 +123,7 @@ namespace ToolKit
       if (pickData.entity)
       {
         const Vec3 projectileStartPos = m_playerController->GetProjectileStartPos();
-        m_playerController->m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(pickData.pickPos - projectileStartPos),
+        m_playerController->m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(m_playerController->m_pointOnPlane - projectileStartPos),
         m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
         {
           GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", object->GetNameVal().c_str(), hit->GetNameVal().c_str());
@@ -179,6 +179,22 @@ namespace ToolKit
 
   void PlayerController::Update(float deltaTime)
   {
+    // Create a plane little above floor and shoot ray from mouse to it. The intersecion point is used by multiple features.
+    static const PlaneEquation planeAboveFloor =
+    {Vec3(0.0f, 1.0f, 0.0f), GameUtils::GetFloorY() + m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f};
+    const Ray ray = GameUtils::GetRayFromMousePosition();
+    float t;
+    RayPlaneIntersection(ray, planeAboveFloor, t);
+    if (t >= 0.0f)
+    {
+      m_pointOnPlaneValid = true;
+      m_pointOnPlane = ray.position + ray.direction * t;
+    }
+    else
+    {
+      m_pointOnPlaneValid = false;
+    }
+
     m_combatStateMachine.Update(deltaTime);
     m_movementStateMachine.Update(deltaTime);
   }
