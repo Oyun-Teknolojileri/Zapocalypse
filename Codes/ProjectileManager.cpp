@@ -5,10 +5,16 @@ namespace ToolKit
 {
   Projectile::Projectile()
   {
-    entity = new Cube(0.1f);
     // Projectiles have a default mesh and material
-    // TODO add mesh
-    // TODO Add material
+    entity = new Cube(Vec3(0.1f));
+    static unsigned nameIndex = 0;
+    nameIndex++;
+    entity->SetNameVal("Projectile " + std::to_string(nameIndex));
+    entity->SetTagVal("pr"); // This tag string is for projectiles only, do not use it elsewhere!
+    MaterialPtr mat = GetMaterialManager()->GetCopyOfUnlitColorMaterial();
+    mat->m_color = Vec3(1.0f, 1.0f, 0.3f);
+    mat->m_emissiveColor = Vec3(1.0f, 1.0f, 0.3f);
+    entity->GetComponent<MeshComponent>()->GetMeshVal()->SetMaterial(mat);
   }
 
   Projectile::~Projectile()
@@ -31,7 +37,7 @@ namespace ToolKit
     }
   }
 
-  bool ProjectileManager::ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* hit)> callback)
+  bool ProjectileManager::ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* projectile, Entity* hit)> callback)
   {
     if (m_availableProjectileIndex == -1) // Check if the pool is full
     {
@@ -68,25 +74,29 @@ namespace ToolKit
     for (unsigned i = 0; i < MAX_PROJECTILES; ++i)
     {
       Projectile& projectile = m_projectilePool[i];
-      BoundingBox projectileBB = projectile.entity->GetAABB();
+      if (!projectile.active)
+      {
+        continue;
+      }
+      BoundingBox projectileBB = projectile.entity->GetAABB(true);
   
       projectile.entity->m_node->Translate(projectile.direction * projectile.speed * deltaTime);
 
       // Collision check with the environment in the scene
       for (Entity* object : m_scene->GetEntities())
       {
-        // Ignore list
-        if (IsIdInListFn(m_projectileHitIgnoreList, object->GetIdVal()))
+        // Ignored entities
+        if (object->GetMeshComponent() == nullptr || IsIdInListFn(m_projectileHitIgnoreList, object->GetIdVal())
+          || object->GetTagVal() == "mainCam" || object->GetTagVal() == "light" || object->GetTagVal() == "pr")
         {
           continue;
         }
 
-        // TODO avoid projectile hit each other
         if (BoxBoxIntersection(object->GetAABB(true), projectileBB))
         {
           // Call calback when hit an object
           if (projectile.callback != nullptr)
-            projectile.callback(object);
+            projectile.callback(projectile.entity, object);
 
           // Remove the projectile
           RemoveProjectile(i);

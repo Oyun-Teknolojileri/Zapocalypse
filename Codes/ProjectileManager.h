@@ -16,7 +16,7 @@ namespace ToolKit
     Entity* entity;
     Vec3 direction; // Should be a unit vector
     float speed;
-    std::function<void(Entity* hit)> callback;
+    std::function<void(Entity* projectile, Entity* hit)> callback;
     short nextAvailableProjectileIndex;
     bool active;
   };
@@ -30,7 +30,7 @@ namespace ToolKit
     // Returns true if the projectile can be shot
     // Note: Direction should be a unit vector
     // Note: Entity must have a mesh component (so the collision check can be done)
-    bool ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* hit)> callback);
+    bool ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* projectile, Entity* hit)> callback);
     void UpdateProjectiles(float deltaTime);
     void Reset(ScenePtr newScene);
     void AddToProjectileIgnoreList(ULongID id);
