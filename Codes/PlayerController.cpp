@@ -110,6 +110,7 @@ namespace ToolKit
     // Create a projectile class
     // Updates every frame
     // Shoot that projectile here
+    // Shoot projectile based on rate of fire (how to shoot between frames for rate of fires that are not divisible with framerate?)
 
     return NullSignal;
   }

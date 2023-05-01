@@ -17,6 +17,9 @@ namespace ToolKit
     m_mainScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
     GetSceneManager()->SetCurrentScene(m_mainScene);
 
+    // ProjectileManager
+    m_projectileManager = new ProjectileManager(m_mainScene);
+
     // Input manager
     m_inputManager = new InputManager();
 
@@ -25,7 +28,7 @@ namespace ToolKit
     playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
 
     // Player controller
-    m_playerController = new PlayerController(playerPrefab, m_inputManager);
+    m_playerController = new PlayerController(playerPrefab, m_inputManager, m_projectileManager);
     m_playerController->Init();
 
     // Attach the camera to the player prefab
@@ -39,15 +42,18 @@ namespace ToolKit
     m_playerController->m_playerPrefab->RemoveComponent(m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->m_id);
 
     SafeDel(m_playerController);
+    SafeDel(m_inputManager);
+    SafeDel(m_projectileManager);
 
     delete this;
   }
 
   void Game::Frame(float deltaTime, class Viewport* viewport)
   {
-    m_inputManager->Update();
-
     viewport->AttachCamera(m_mainCam->GetIdVal());
+
+    m_inputManager->Update();
+    m_projectileManager->UpdateProjectiles(deltaTime);
 
     // Update player controller
     m_playerController->Update(deltaTime);

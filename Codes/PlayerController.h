@@ -2,6 +2,7 @@
 #include "ToolKit.h"
 #include "StateMachine.h"
 #include "InputManager.h"
+#include "ProjectileManager.h"
 
 namespace ToolKit
 {
@@ -105,7 +106,8 @@ namespace ToolKit
   class PlayerController
   {
      public:
-      PlayerController(Entity* playerPrefab, InputManager* inputManager) : m_playerPrefab(playerPrefab), m_inputManager(inputManager) {}
+      PlayerController(Entity* playerPrefab, InputManager* inputManager, ProjectileManager* projectileManager)
+        : m_playerPrefab(playerPrefab), m_inputManager(inputManager), m_projectileManager(projectileManager) {}
       ~PlayerController() {}
 
       void Init();
@@ -130,6 +132,7 @@ namespace ToolKit
 
       Entity* m_playerPrefab = nullptr;
       InputManager* m_inputManager = nullptr;
+      ProjectileManager* m_projectileManager = nullptr;
 
       float m_playerWalkSpeed = 0.1f;
   };
