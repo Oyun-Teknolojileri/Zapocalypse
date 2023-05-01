@@ -61,6 +61,7 @@ set(
 	PlayerController.h
 	InputManager.h
 	ProjectileManager.h
+	GameUtils.h
 )
 
 set(

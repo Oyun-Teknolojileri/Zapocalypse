@@ -135,5 +135,11 @@ namespace ToolKit
       ProjectileManager* m_projectileManager = nullptr;
 
       float m_playerWalkSpeed = 0.1f;
+
+      Vec3 m_projectileStartPos = ZERO;
+      float m_projectileSpeed = 0.05f;
+      float m_projectileCooldown = 0.2f;
+
+      ScenePtr m_scene = nullptr;
   };
 }

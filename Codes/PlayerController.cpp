@@ -1,4 +1,6 @@
 #include "PlayerController.h"
+#include "GameUtils.h"
+#include "MathUtil.h"
 
 namespace ToolKit
 {
@@ -106,11 +108,21 @@ namespace ToolKit
       return CombatSignal::Hold;
     }
 
-    // TODO
-    // Create a projectile class
-    // Updates every frame
-    // Shoot that projectile here
-    // Shoot projectile based on rate of fire (how to shoot between frames for rate of fires that are not divisible with framerate?)
+    // TODO cooldown
+
+    // Shoot
+    Ray rayToScene = GameUtils::GetRayFromMousePosition();
+    Scene::PickData pickData = m_playerController->m_scene->PickObject(rayToScene, {});
+    if (pickData.entity)
+    {
+      m_playerController->m_projectileManager->ShootProjectile(m_playerController->m_projectileStartPos, glm::normalize(pickData.pickPos - m_playerController->m_projectileStartPos),
+      m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
+      {
+        GetLogger()->WriteConsole(LogType::Warning, "%s %s", object->GetNameVal().c_str(), hit->GetNameVal().c_str());
+      });
+    }
+
+    // TODO Shoot projectile based on rate of fire (how to shoot between frames for rate of fires that are not divisible with framerate?)
 
     return NullSignal;
   }

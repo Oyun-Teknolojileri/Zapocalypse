@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "DirectionComponent.h"
+#include "GameUtils.h"
 
 extern "C" TK_GAME_API ToolKit::Game * TK_STDCAL CreateInstance()
 {
@@ -27,8 +28,21 @@ namespace ToolKit
     Entity* playerPrefab = GetSceneManager()->GetCurrentScene()->GetFirstByTag("playerPrefab");
     playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
 
+    // Projectile start pos
+    Vec3 projectileStartPos = ZERO;
+    for (Node* child : playerPrefab->m_node->m_children[0]->m_children)
+    {
+      if (child->m_entity->GetTagVal() == "projectileStartPos")
+      {
+        projectileStartPos = child->GetTranslation();
+        break;
+      }
+    }
+
     // Player controller
     m_playerController = new PlayerController(playerPrefab, m_inputManager, m_projectileManager);
+    m_playerController->m_projectileStartPos = projectileStartPos;
+    m_playerController->m_scene = m_mainScene;
     m_playerController->Init();
 
     // Attach the camera to the player prefab
@@ -50,6 +64,8 @@ namespace ToolKit
 
   void Game::Frame(float deltaTime, class Viewport* viewport)
   {
+    GameUtils::m_viewport = viewport;
+
     viewport->AttachCamera(m_mainCam->GetIdVal());
 
     m_inputManager->Update();
