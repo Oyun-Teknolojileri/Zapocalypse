@@ -1,3 +1,4 @@
+#pragma once
 #include "ToolKit.h"
 
 namespace ToolKit
@@ -10,10 +11,16 @@ namespace ToolKit
     public:
     inline static Ray GetRayFromMousePosition()
     {
-      return m_viewport->RayFromMousePosition();
+      return GameViewport->RayFromMousePosition();
+    }
+
+    inline static float GetFloorY()
+    {
+      return SceneFloorY;
     }
 
     private:
-    inline static GameUtils::Viewport* m_viewport = nullptr;
+    inline static Viewport* GameViewport = nullptr;
+    inline static float SceneFloorY = 0.0f;
   };
 }

@@ -1,6 +1,4 @@
 #include "PlayerController.h"
-#include "GameUtils.h"
-#include "MathUtil.h"
 
 namespace ToolKit
 {
@@ -14,6 +12,8 @@ namespace ToolKit
     {
       return MovementSignal::Move;
     }
+
+    m_playerController->RotatePlayerWithMouse();
 
     return NullSignal;
   }
@@ -34,6 +34,9 @@ namespace ToolKit
     {
       return MovementSignal::Stop;
     }
+
+    // Player rotation
+    m_playerController->RotatePlayerWithMouse();
 
     // Player movement
 
@@ -119,7 +122,8 @@ namespace ToolKit
       Scene::PickData pickData = m_playerController->m_scene->PickObject(rayToScene, {});
       if (pickData.entity)
       {
-        m_playerController->m_projectileManager->ShootProjectile(m_playerController->m_projectileStartPos, glm::normalize(pickData.pickPos - m_playerController->m_projectileStartPos),
+        const Vec3 projectileStartPos = m_playerController->GetProjectileStartPos();
+        m_playerController->m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(pickData.pickPos - projectileStartPos),
         m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
         {
           GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", object->GetNameVal().c_str(), hit->GetNameVal().c_str());

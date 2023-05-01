@@ -24,13 +24,20 @@ namespace ToolKit
     // Input manager
     m_inputManager = new InputManager();
 
+    // Floor entity
+    m_floor = m_mainScene->GetFirstByTag("floor");
+
     // Player prefab
-    Entity* playerPrefab = GetSceneManager()->GetCurrentScene()->GetFirstByTag("playerPrefab");
-    playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
+    m_playerPrefab = m_mainScene->GetFirstByTag("playerPrefab");
+    m_playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
+    // Snap player to floor
+    Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
+    float halfHeight = m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
+    m_playerPrefab->m_node->SetTranslation(Vec3(playerPos.x, m_floor->m_node->GetTranslation().y + halfHeight, playerPos.z));
 
     // Projectile start pos
     Vec3 projectileStartPos = ZERO;
-    for (Node* child : playerPrefab->m_node->m_children[0]->m_children)
+    for (Node* child : m_playerPrefab->m_node->m_children[0]->m_children)
     {
       if (child->m_entity->GetTagVal() == "projectileStartPos")
       {
@@ -40,14 +47,13 @@ namespace ToolKit
     }
 
     // Player controller
-    m_playerController = new PlayerController(playerPrefab, m_inputManager, m_projectileManager);
-    m_playerController->m_projectileStartPos = projectileStartPos;
+    m_playerController = new PlayerController(m_playerPrefab, m_inputManager, m_projectileManager);
     m_playerController->m_scene = m_mainScene;
     m_playerController->Init();
 
     // Attach the camera to the player prefab
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
-    playerPrefab->m_node->AddChild(m_mainCam->m_node, true);
+    UpdateCameraPosition();
   }
 
   void Game::Destroy()
@@ -64,14 +70,14 @@ namespace ToolKit
 
   void Game::Frame(float deltaTime, class Viewport* viewport)
   {
-    GameUtils::m_viewport = viewport;
-
     viewport->AttachCamera(m_mainCam->GetIdVal());
 
+    GameUtils::GameViewport = viewport;
+    GameUtils::SceneFloorY = m_floor->m_node->GetTranslation().y;
+
+    UpdateCameraPosition();
     m_inputManager->Update();
     m_projectileManager->UpdateProjectiles(deltaTime);
-
-    // Update player controller
     m_playerController->Update(deltaTime);
 
 #ifdef __EMSCRIPTEN__
@@ -90,4 +96,9 @@ namespace ToolKit
 #endif
   }
 
+  void Game::UpdateCameraPosition()
+  {
+    static const Vec3 cameraDistance = Vec3(5.0f, 5.0f, 5.0f);
+    m_mainCam->m_node->SetTranslation(cameraDistance + m_playerPrefab->m_node->GetTranslation());
+  }
 }
