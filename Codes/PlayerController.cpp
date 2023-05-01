@@ -108,21 +108,26 @@ namespace ToolKit
       return CombatSignal::Hold;
     }
 
-    // TODO cooldown
-
     // Shoot
-    Ray rayToScene = GameUtils::GetRayFromMousePosition();
-    Scene::PickData pickData = m_playerController->m_scene->PickObject(rayToScene, {});
-    if (pickData.entity)
+    static float pastTime = m_playerController->m_projectileCooldown + 1.0f;
+    pastTime += deltaTime;
+    if (pastTime > m_playerController->m_projectileCooldown)
     {
-      m_playerController->m_projectileManager->ShootProjectile(m_playerController->m_projectileStartPos, glm::normalize(pickData.pickPos - m_playerController->m_projectileStartPos),
-      m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
+      pastTime = 0.0f;
+
+      Ray rayToScene = GameUtils::GetRayFromMousePosition();
+      Scene::PickData pickData = m_playerController->m_scene->PickObject(rayToScene, {});
+      if (pickData.entity)
       {
-        GetLogger()->WriteConsole(LogType::Warning, "%s %s", object->GetNameVal().c_str(), hit->GetNameVal().c_str());
-      });
+        m_playerController->m_projectileManager->ShootProjectile(m_playerController->m_projectileStartPos, glm::normalize(pickData.pickPos - m_playerController->m_projectileStartPos),
+        m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
+        {
+          GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", object->GetNameVal().c_str(), hit->GetNameVal().c_str());
+        });
+      }
     }
 
-    // TODO Shoot projectile based on rate of fire (how to shoot between frames for rate of fires that are not divisible with framerate?)
+    // TODO Shoot projectile based on rate of fire based on time (find a solution for how to shoot between frames when update misses the time of shoot (which probably is gonna happen always))
 
     return NullSignal;
   }

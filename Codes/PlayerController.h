@@ -138,7 +138,7 @@ namespace ToolKit
 
       Vec3 m_projectileStartPos = ZERO;
       float m_projectileSpeed = 0.05f;
-      float m_projectileCooldown = 0.2f;
+      float m_projectileCooldown = 200.0f;
 
       ScenePtr m_scene = nullptr;
   };
