@@ -3,6 +3,9 @@
 #include "StateMachine.h"
 #include "InputManager.h"
 #include "ProjectileManager.h"
+#include "GameUtils.h"
+#include "MathUtil.h"
+#include "DirectionComponent.h"
 
 namespace ToolKit
 {
@@ -123,6 +126,52 @@ namespace ToolKit
         return m_inputManager->LeftMouseDown();
       }
 
+      inline Vec3 GetProjectileStartPos()
+      {
+        static Node* projectileStartPosNode = nullptr;
+        if (!projectileStartPosNode)
+        {
+          for (Node* node : m_playerPrefab->m_node->m_children[0]->m_children)
+          {
+            if (node->m_entity->GetTagVal() == "projectileStartPos")
+            {
+              projectileStartPosNode = node;
+              break;
+            }
+          }
+        }
+        return projectileStartPosNode->GetTranslation();
+      }
+
+      inline void RotatePlayerWithMouse()
+      {
+        static const PlaneEquation planeAboveFloor =
+        {Vec3(0.0f, 1.0f, 0.0f), GameUtils::GetFloorY() + m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f};
+
+        const Ray ray = GameUtils::GetRayFromMousePosition();
+        float t;
+        RayPlaneIntersection(ray, planeAboveFloor, t);
+        if (t >= 0.0f)
+        {
+          // Find the point to rotate
+          const Vec3 pointOnPlane = ray.position + ray.direction * t;
+
+          // Calculate the delta direction to check if the difference worths to rotate
+          static Vec3 last = m_playerPrefab->GetComponent<DirectionComponent>()->GetDirection();
+          const Vec3 newDir = glm::normalize(pointOnPlane - m_playerPrefab->m_node->GetTranslation());
+          const Vec3 deltaVec = last - newDir;
+          const float delta = glm::abs(deltaVec.x) + glm::abs(deltaVec.y) + glm::abs(deltaVec.z);
+          if (delta > 0.01f) // Avoid bugs caused by numerical errors with little floating point numbers
+          {
+            // Rotate the entity
+            const Quaternion rotateQuat = RotationTo(m_playerPrefab->GetComponent<DirectionComponent>()->GetDirection(), pointOnPlane - m_playerPrefab->m_node->GetTranslation());
+            m_playerPrefab->m_node->Rotate(rotateQuat, TransformationSpace::TS_LOCAL);
+          }
+          // Save the last direction to check direction difference on next update
+          last = m_playerPrefab->GetComponent<DirectionComponent>()->GetDirection();
+        }
+      }
+
      private:
       PlayerController() {}
 
@@ -135,5 +184,10 @@ namespace ToolKit
       ProjectileManager* m_projectileManager = nullptr;
 
       float m_playerWalkSpeed = 0.1f;
+
+      float m_projectileSpeed = 0.05f;
+      float m_projectileCooldown = 200.0f;
+
+      ScenePtr m_scene = nullptr;
   };
 }
