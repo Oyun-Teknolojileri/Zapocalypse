@@ -13,7 +13,7 @@ namespace ToolKit
       return MovementSignal::Move;
     }
 
-    m_playerController->RotatePlayerWithMouse();
+    //TODO m_playerController->RotatePlayerWithMouse();
 
     return NullSignal;
   }
@@ -36,7 +36,7 @@ namespace ToolKit
     }
 
     // Player rotation
-    m_playerController->RotatePlayerWithMouse();
+    //TODO m_playerController->RotatePlayerWithMouse();
 
     // Player movement
 

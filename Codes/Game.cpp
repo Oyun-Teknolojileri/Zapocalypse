@@ -75,10 +75,10 @@ namespace ToolKit
     GameUtils::GameViewport = viewport;
     GameUtils::SceneFloorY = m_floor->m_node->GetTranslation().y;
 
-    UpdateCameraPosition();
     m_inputManager->Update();
     m_projectileManager->UpdateProjectiles(deltaTime);
     m_playerController->Update(deltaTime);
+    UpdateCameraPosition();
 
 #ifdef __EMSCRIPTEN__
     GetRenderSystem()->ExecuteRenderTasks();
