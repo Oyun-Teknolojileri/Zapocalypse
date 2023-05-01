@@ -3,5 +3,6 @@
 [+] state machine for player movement
 [+] create a prefab for player, attach a direction component when starting the game
 [+] shooting controls (top-down shooter)
+[ ] HUGE BUG: ChARACTER ROTATION
 [ ] shoot enemies
 [ ] enemy ai
