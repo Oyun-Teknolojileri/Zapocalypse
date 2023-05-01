@@ -2,6 +2,6 @@
 [+] WASD player controls
 [+] state machine for player movement
 [+] create a prefab for player, attach a direction component when starting the game
-[ ] shooting controls (top-down shooter)
+[+] shooting controls (top-down shooter)
 [ ] shoot enemies
 [ ] enemy ai
