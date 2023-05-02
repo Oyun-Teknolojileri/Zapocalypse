@@ -33,6 +33,11 @@ namespace ToolKit
       return glm::quat_cast(Result);
     }
 
+    inline static float SquaredLength(const Vec3& vec)
+    {
+      return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
+    }
+
     private:
     inline static Viewport* GameViewport = nullptr;
     inline static float SceneFloorY = 0.0f;

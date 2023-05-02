@@ -165,7 +165,7 @@ namespace ToolKit
       bool m_pointOnPlaneValid = false;
       Vec3 m_pointOnPlane = ZERO;
 
-      float m_playerWalkSpeed = 0.1f;
+      float m_playerWalkSpeed = 0.01f;
 
       float m_projectileSpeed = 0.05f;
       float m_projectileCooldown = 200.0f;

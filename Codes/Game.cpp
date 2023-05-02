@@ -99,6 +99,16 @@ namespace ToolKit
   void Game::UpdateCameraPosition()
   {
     static const Vec3 cameraDistance = Vec3(5.0f, 5.0f, 5.0f);
-    m_mainCam->m_node->SetTranslation(cameraDistance + m_playerPrefab->m_node->GetTranslation());
+    const Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
+    const Vec3 targetPos = playerPos + cameraDistance;
+    const Vec3 delta = targetPos - m_mainCam->m_node->GetTranslation();
+    if (GameUtils::SquaredLength(delta) < 0.05f)
+    {
+       m_mainCam->m_node->SetTranslation(targetPos);
+    }
+    else
+    {
+      m_mainCam->m_node->Translate(delta * 0.1f);
+    }
   }
 }
