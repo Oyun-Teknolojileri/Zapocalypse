@@ -1,6 +1,7 @@
 #include "Game.h"
 #include "DirectionComponent.h"
 #include "GameUtils.h"
+#include "GameGlobals.h"
 
 extern "C" TK_GAME_API ToolKit::Game * TK_STDCAL CreateInstance()
 {
@@ -15,20 +16,20 @@ namespace ToolKit
     Main::SetProxy(master);
 
     // Scene
-    m_mainScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
-    GetSceneManager()->SetCurrentScene(m_mainScene);
+    g_gameGlobals.m_currentScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
+    GetSceneManager()->SetCurrentScene(g_gameGlobals.m_currentScene);
 
     // ProjectileManager
-    m_projectileManager = new ProjectileManager(m_mainScene);
+    g_gameGlobals.m_projectileManager = new ProjectileManager(g_gameGlobals.m_currentScene);
 
     // Input manager
-    m_inputManager = new InputManager();
+    g_gameGlobals.m_inputManager = new InputManager();
 
     // Floor entity
-    m_floor = m_mainScene->GetFirstByTag("floor");
+    m_floor = g_gameGlobals.m_currentScene->GetFirstByTag("floor");
 
     // Player prefab
-    m_playerPrefab = m_mainScene->GetFirstByTag("playerPrefab");
+    m_playerPrefab = g_gameGlobals.m_currentScene->GetFirstByTag("playerPrefab");
     m_playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
     // Snap player to floor
     Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
@@ -46,10 +47,17 @@ namespace ToolKit
       }
     }
 
+    // Enemy controller
+    g_gameGlobals.m_enemyController = new EnemyController();
+    for (Entity* enemyPrefabEntity : g_gameGlobals.m_currentScene->GetByTag("enemyPrefab"))
+    {
+      g_gameGlobals.m_enemyController->AddEnemy(enemyPrefabEntity);
+    }
+
     // Player controller
-    m_playerController = new PlayerController(m_playerPrefab, m_inputManager, m_projectileManager);
-    m_playerController->m_scene = m_mainScene;
-    m_playerController->Init();
+    g_gameGlobals.m_playerController = new PlayerController(m_playerPrefab);
+    g_gameGlobals.m_playerController->m_scene = g_gameGlobals.m_currentScene;
+    g_gameGlobals.m_playerController->Init();
 
     // Attach the camera to the player prefab
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
@@ -59,11 +67,12 @@ namespace ToolKit
   void Game::Destroy()
   {
     // Remove direction component from player
-    m_playerController->m_playerPrefab->RemoveComponent(m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->m_id);
+    g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->m_id);
 
-    SafeDel(m_playerController);
-    SafeDel(m_inputManager);
-    SafeDel(m_projectileManager);
+    SafeDel(g_gameGlobals.m_playerController);
+    SafeDel(g_gameGlobals.m_inputManager);
+    SafeDel(g_gameGlobals.m_projectileManager);
+    SafeDel(g_gameGlobals.m_enemyController);
 
     delete this;
   }
@@ -75,9 +84,10 @@ namespace ToolKit
     GameUtils::GameViewport = viewport;
     GameUtils::SceneFloorY = m_floor->m_node->GetTranslation().y;
 
-    m_inputManager->Update();
-    m_projectileManager->UpdateProjectiles(deltaTime);
-    m_playerController->Update(deltaTime);
+    g_gameGlobals.m_inputManager->Update();
+    g_gameGlobals.m_projectileManager->UpdateProjectiles(deltaTime);
+    g_gameGlobals.m_playerController->Update(deltaTime);
+    g_gameGlobals.m_enemyController->Update(deltaTime);
     UpdateCameraPosition();
 
 #ifdef __EMSCRIPTEN__

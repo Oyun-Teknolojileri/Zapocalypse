@@ -49,6 +49,7 @@ set(
 	PlayerController.cpp
 	InputManager.cpp
 	ProjectileManager.cpp
+	EnemyController.cpp
 )
 
 if (${WEB_BUILD})
@@ -62,6 +63,8 @@ set(
 	InputManager.h
 	ProjectileManager.h
 	GameUtils.h
+	EnemyController.h
+	GameGlobals.h
 )
 
 set(

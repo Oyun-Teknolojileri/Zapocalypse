@@ -1,4 +1,6 @@
 #include "PlayerController.h"
+#include "ProjectileManager.h"
+#include "EnemyController.h"
 
 namespace ToolKit
 {
@@ -8,12 +10,12 @@ namespace ToolKit
 
   SignalId StationaryState::Update(float deltaTime)
   {
-    if (m_playerController->IsPlayerMoving())
+    if (g_gameGlobals.m_playerController->IsPlayerMoving())
     {
       return MovementSignal::Move;
     }
 
-    m_playerController->RotatePlayerWithMouse();
+    g_gameGlobals.m_playerController->RotatePlayerWithMouse();
 
     return NullSignal;
   }
@@ -30,40 +32,40 @@ namespace ToolKit
 
   SignalId WalkState::Update(float deltaTime)
   {
-    if (!m_playerController->IsPlayerMoving())
+    if (!g_gameGlobals.m_playerController->IsPlayerMoving())
     {
       return MovementSignal::Stop;
     }
 
     // Player rotation
-    m_playerController->RotatePlayerWithMouse();
+    g_gameGlobals.m_playerController->RotatePlayerWithMouse();
 
     // Player movement
 
-    const float speed = deltaTime * m_playerController->m_playerWalkSpeed;
+    const float speed = deltaTime * g_gameGlobals.m_playerController->m_playerWalkSpeed;
     static const Vec3 up = glm::normalize(Vec3(-1.0f, 0.0f, -1.0f));
     static const Vec3 down = glm::normalize(Vec3(1.0f, 0.0f, 1.0f));
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
     static const Vec3 right = glm::normalize(Vec3(1.0f, 0.0f, -1.0f));
 
-    if (m_inputManager->WDown())
+    if (g_gameGlobals.m_inputManager->WDown())
     {
-      m_playerController->m_playerPrefab->m_node->Translate(speed * up);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * up);
     }
 
-    if (m_inputManager->SDown())
+    if (g_gameGlobals.m_inputManager->SDown())
     {
-      m_playerController->m_playerPrefab->m_node->Translate(speed * down);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * down);
     }
 
-    if (m_inputManager->ADown())
+    if (g_gameGlobals.m_inputManager->ADown())
     {
-      m_playerController->m_playerPrefab->m_node->Translate(speed * left);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * left);
     }
 
-    if (m_inputManager->DDown())
+    if (g_gameGlobals.m_inputManager->DDown())
     {
-      m_playerController->m_playerPrefab->m_node->Translate(speed * right);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * right);
     }
 
     return NullSignal;
@@ -86,7 +88,7 @@ namespace ToolKit
 
   SignalId HoldState::Update(float deltaTime)
   {
-    if (m_playerController->IsPlayerTryingToShoot())
+    if (g_gameGlobals.m_playerController->IsPlayerTryingToShoot())
     {
       return CombatSignal::Shoot;
     }
@@ -106,32 +108,32 @@ namespace ToolKit
 
   SignalId ShootState::Update(float deltaTime)
   {
-    if (!m_playerController->IsPlayerTryingToShoot())
+    if (!g_gameGlobals.m_playerController->IsPlayerTryingToShoot())
     {
       return CombatSignal::Hold;
     }
 
+    // TODO Shoot projectile based on rate of fire based on time (find a solution for how to shoot between frames when update misses the time of shoot (which will always happen))
+
     // Shoot
-    static float pastTime = m_playerController->m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_playerController->m_projectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > m_playerController->m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_playerController->m_projectileCooldown)
     {
-      pastTime = 0.0f;
-
-      Ray rayToScene = GameUtils::GetRayFromMousePosition();
-      Scene::PickData pickData = m_playerController->m_scene->PickObject(rayToScene, {});
-      if (pickData.entity)
+      pastTime -= g_gameGlobals.m_playerController->m_projectileCooldown;
+      const Vec3 projectileStartPos = g_gameGlobals.m_playerController->GetProjectileStartPos();
+      g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
+      g_gameGlobals.m_playerController->m_projectileSpeed, [](Entity* projectile, Entity* hit)
       {
-        const Vec3 projectileStartPos = m_playerController->GetProjectileStartPos();
-        m_playerController->m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(m_playerController->m_pointOnPlane - projectileStartPos),
-        m_playerController->m_projectileSpeed, [](Entity* object, Entity* hit)
+        const char* projectileName = projectile->GetNameVal().c_str();
+        const char* hitName = hit->GetNameVal().c_str();
+        if (hit->GetTagVal() == "enemy")
         {
-          GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", object->GetNameVal().c_str(), hit->GetNameVal().c_str());
-        });
-      }
+          g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), 50.0f);
+        }
+        GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", projectileName, hitName);
+      });
     }
-
-    // TODO Shoot projectile based on rate of fire based on time (find a solution for how to shoot between frames when update misses the time of shoot (which probably is gonna happen always))
 
     return NullSignal;
   }
@@ -150,13 +152,9 @@ namespace ToolKit
   {
     // movement states
     StationaryState* stationaryState = new StationaryState();
-    stationaryState->m_playerController = this;
-    stationaryState->m_inputManager = m_inputManager;
     m_movementStateMachine.PushState(stationaryState);
 
     WalkState* walkState = new WalkState();
-    walkState->m_playerController = this;
-    walkState->m_inputManager = m_inputManager;
     m_movementStateMachine.PushState(walkState);
 
     // Start with stationary state
@@ -164,13 +162,9 @@ namespace ToolKit
 
     // combat states
     HoldState* holdState = new HoldState();
-    holdState->m_playerController = this;
-    holdState->m_inputManager = m_inputManager;
     m_combatStateMachine.PushState(holdState);
 
     ShootState* shootState = new ShootState();
-    shootState->m_playerController = this;
-    shootState->m_inputManager = m_inputManager;
     m_combatStateMachine.PushState(shootState);
 
     // Start with hold state

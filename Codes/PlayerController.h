@@ -1,11 +1,11 @@
 #pragma once
 #include "ToolKit.h"
 #include "StateMachine.h"
-#include "InputManager.h"
-#include "ProjectileManager.h"
-#include "GameUtils.h"
 #include "MathUtil.h"
+#include "GameUtils.h"
+#include "GameGlobals.h"
 #include "DirectionComponent.h"
+#include "InputManager.h"
 
 namespace ToolKit
 {
@@ -16,10 +16,6 @@ namespace ToolKit
     virtual ~BaseState() {}
     void TransitionIn(State* prevState) override {}
     void TransitionOut(State* nextState) override {}
-
-   public:
-    class PlayerController* m_playerController = nullptr;
-    InputManager* m_inputManager = nullptr;
   };
 
   // Movement State Machine
@@ -109,8 +105,7 @@ namespace ToolKit
   class PlayerController
   {
      public:
-      PlayerController(Entity* playerPrefab, InputManager* inputManager, ProjectileManager* projectileManager)
-        : m_playerPrefab(playerPrefab), m_inputManager(inputManager), m_projectileManager(projectileManager) {}
+      PlayerController(Entity* playerPrefab) : m_playerPrefab(playerPrefab) {}
       ~PlayerController() {}
 
       void Init();
@@ -118,12 +113,12 @@ namespace ToolKit
 
       inline bool IsPlayerMoving()
       {
-        return m_inputManager->WDown() || m_inputManager->SDown() || m_inputManager->ADown() || m_inputManager->DDown();
+        return g_gameGlobals.m_inputManager->WDown() || g_gameGlobals.m_inputManager->SDown() || g_gameGlobals.m_inputManager->ADown() || g_gameGlobals.m_inputManager->DDown();
       }
 
       inline bool IsPlayerTryingToShoot()
       {
-        return m_inputManager->LeftMouseDown();
+        return g_gameGlobals.m_inputManager->LeftMouseDown();
       }
 
       inline Vec3 GetProjectileStartPos()
@@ -159,8 +154,6 @@ namespace ToolKit
       StateMachine m_combatStateMachine;
 
       Entity* m_playerPrefab = nullptr;
-      InputManager* m_inputManager = nullptr;
-      ProjectileManager* m_projectileManager = nullptr;
 
       bool m_pointOnPlaneValid = false;
       Vec3 m_pointOnPlane = ZERO;
@@ -168,7 +161,7 @@ namespace ToolKit
       float m_playerWalkSpeed = 0.01f;
 
       float m_projectileSpeed = 0.05f;
-      float m_projectileCooldown = 200.0f;
+      float m_projectileCooldown = 100.0f;
 
       ScenePtr m_scene = nullptr;
   };

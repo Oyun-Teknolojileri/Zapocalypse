@@ -16,7 +16,7 @@ namespace ToolKit
     mat->m_emissiveColor = Vec3(1.0f, 1.0f, 0.3f);
     entity->GetComponent<MeshComponent>()->GetMeshVal()->SetMaterial(mat);
     
-    lifeTime = 10000.0f;
+    lifeTime = 5000.0f;
     duration = 0.0f;
   }
 
@@ -56,6 +56,7 @@ namespace ToolKit
     projectile.speed = speed;
     projectile.callback = callback;
     projectile.active = true;
+    projectile.duration = 0.0f;
 
     // Add projectile to the scene
     m_scene->AddEntity(projectile.entity);

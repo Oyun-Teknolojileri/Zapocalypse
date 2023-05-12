@@ -6,10 +6,10 @@
 #include "PlayerController.h"
 #include "InputManager.h"
 #include "ProjectileManager.h"
+#include "EnemyController.h"
 
 namespace ToolKit
 {
-
   class Game : public GamePlugin
   {
   public:
@@ -25,14 +25,10 @@ namespace ToolKit
     SceneRenderer m_sceneRenderer;
 #endif
 
-    ScenePtr m_mainScene = nullptr;
+    private:
     Entity* m_playerPrefab = nullptr;
     Entity* m_mainCam = nullptr;
     Entity* m_floor = nullptr;
-
-    InputManager* m_inputManager = nullptr;
-    PlayerController* m_playerController = nullptr;
-    ProjectileManager* m_projectileManager = nullptr;
   };
 }
 

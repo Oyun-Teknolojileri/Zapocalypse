@@ -4,5 +4,5 @@
 [+] create a prefab for player, attach a direction component when starting the game
 [+] shooting controls (top-down shooter)
 [+] (FIXED)HUGE BUG: ChARACTER ROTATION
-[ ] shoot enemies
-[ ] enemy ai
+[+] shoot enemies
+[ ] enemy ai (using state machine)
