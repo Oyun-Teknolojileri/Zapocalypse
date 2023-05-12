@@ -15,6 +15,9 @@ namespace ToolKit
     mat->m_color = Vec3(1.0f, 1.0f, 0.3f);
     mat->m_emissiveColor = Vec3(1.0f, 1.0f, 0.3f);
     entity->GetComponent<MeshComponent>()->GetMeshVal()->SetMaterial(mat);
+    
+    lifeTime = 10000.0f;
+    duration = 0.0f;
   }
 
   Projectile::~Projectile()
@@ -78,6 +81,17 @@ namespace ToolKit
       {
         continue;
       }
+      if (projectile.lifeTime < projectile.duration)
+      {
+        // Remove the projectile
+        RemoveProjectile(i);
+        continue;
+      }
+      else
+      {
+        projectile.duration += deltaTime;
+      }
+
       BoundingBox projectileBB = projectile.entity->GetAABB(true);
   
       projectile.entity->m_node->Translate(projectile.direction * projectile.speed * deltaTime);

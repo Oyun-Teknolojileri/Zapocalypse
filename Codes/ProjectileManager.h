@@ -19,6 +19,8 @@ namespace ToolKit
     std::function<void(Entity* projectile, Entity* hit)> callback;
     short nextAvailableProjectileIndex;
     bool active;
+    float lifeTime; // In milliseconds
+    float duration; // In milliseconds
   };
 
   class ProjectileManager

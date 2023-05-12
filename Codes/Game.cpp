@@ -102,7 +102,7 @@ namespace ToolKit
     const Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
     const Vec3 targetPos = playerPos + cameraDistance;
     const Vec3 delta = targetPos - m_mainCam->m_node->GetTranslation();
-    if (GameUtils::SquaredLength(delta) < 0.05f)
+    if (GameUtils::SquaredLength(delta) < 0.02f)
     {
        m_mainCam->m_node->SetTranslation(targetPos);
     }
