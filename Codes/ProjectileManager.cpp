@@ -100,9 +100,8 @@ namespace ToolKit
       for (Entity* object : m_scene->GetEntities())
       {
         // Ignored entities
-        // TODO remove the player check after implementing player turns via mouse position and setting a projectile starting position in front of the player
         if (object->GetMeshComponent() == nullptr || IsIdInListFn(m_projectileHitIgnoreList, object->GetIdVal())
-          || object->GetTagVal() == "mainCam" || object->GetTagVal() == "light" || object->GetTagVal() == "pr" || object->GetTagVal() == "player") 
+          || object->GetTagVal() == "mainCam" || object->GetTagVal() == "light" || object->GetTagVal() == "pr") 
         {
           continue;
         }
