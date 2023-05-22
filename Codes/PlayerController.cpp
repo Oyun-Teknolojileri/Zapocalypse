@@ -4,15 +4,15 @@
 
 namespace ToolKit
 {
-  String MovementState::Null = "";
-  String MovementState::Stationary = "Stationary";
-  String MovementState::Walk = "Walk";
+  String PlayerMovementState::Null = "";
+  String PlayerMovementState::Stationary = "Stationary";
+  String PlayerMovementState::Walk = "Walk";
 
-  SignalId StationaryState::Update(float deltaTime)
+  SignalId PlayerStationaryState::Update(float deltaTime)
   {
     if (g_gameGlobals.m_playerController->IsPlayerMoving())
     {
-      return MovementSignal::Move;
+      return PlayerMovementSignal::Move;
     }
 
     g_gameGlobals.m_playerController->RotatePlayerWithMouse();
@@ -20,21 +20,21 @@ namespace ToolKit
     return NullSignal;
   }
 
-  String StationaryState::Signaled(SignalId signal)
+  String PlayerStationaryState::Signaled(SignalId signal)
   {
-    if (signal == MovementSignal::Move)
+    if (signal == PlayerMovementSignal::Move)
     {
-      return MovementState::Walk;
+      return PlayerMovementState::Walk;
     }
     
-    return MovementState::Null;
+    return PlayerMovementState::Null;
   }
 
-  SignalId WalkState::Update(float deltaTime)
+  SignalId PlayerWalkState::Update(float deltaTime)
   {
     if (!g_gameGlobals.m_playerController->IsPlayerMoving())
     {
-      return MovementSignal::Stop;
+      return PlayerMovementSignal::Stop;
     }
 
     // Player rotation
@@ -71,46 +71,46 @@ namespace ToolKit
     return NullSignal;
   }
 
-  String WalkState::Signaled(SignalId signal)
+  String PlayerWalkState::Signaled(SignalId signal)
   {
-    if (signal == MovementSignal::Stop)
+    if (signal == PlayerMovementSignal::Stop)
     {
-      return MovementState::Stationary;
+      return PlayerMovementState::Stationary;
     }
 
-    return MovementState::Null;
+    return PlayerMovementState::Null;
   }
 
-  String CombatState::Null = "";
-  String CombatState::Hold = "Hold";
-  String CombatState::Shoot = "Shoot";
-  // TODO String CombatState::Reload;
+  String PlayerCombatState::Null = "";
+  String PlayerCombatState::Hold = "Hold";
+  String PlayerCombatState::Shoot = "Shoot";
+  // TODO String PlayerCombatState::Reload;
 
-  SignalId HoldState::Update(float deltaTime)
+  SignalId PlayerHoldState::Update(float deltaTime)
   {
     if (g_gameGlobals.m_playerController->IsPlayerTryingToShoot())
     {
-      return CombatSignal::Shoot;
+      return PlayerCombatSignal::Shoot;
     }
 
     return NullSignal;
   }
 
-  String HoldState::Signaled(SignalId signal)
+  String PlayerHoldState::Signaled(SignalId signal)
   {
-    if (signal == CombatSignal::Shoot)
+    if (signal == PlayerCombatSignal::Shoot)
     {
-      return CombatState::Shoot;
+      return PlayerCombatState::Shoot;
     }
 
-    return CombatState::Null;
+    return PlayerCombatState::Null;
   }
 
-  SignalId ShootState::Update(float deltaTime)
+  SignalId PlayerShootState::Update(float deltaTime)
   {
     if (!g_gameGlobals.m_playerController->IsPlayerTryingToShoot())
     {
-      return CombatSignal::Hold;
+      return PlayerCombatSignal::Hold;
     }
 
     // TODO Shoot projectile based on rate of fire based on time (find a solution for how to shoot between frames when update misses the time of shoot (which will always happen))
@@ -125,50 +125,50 @@ namespace ToolKit
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
       g_gameGlobals.m_playerController->m_projectileSpeed, [](Entity* projectile, Entity* hit)
       {
-        const char* projectileName = projectile->GetNameVal().c_str();
-        const char* hitName = hit->GetNameVal().c_str();
+        String projectileName = projectile->GetNameVal(); // Allocates memory, temporary test code
+        String hitName = hit->GetNameVal();               // Allocates memory, temporary test code
         if (hit->GetTagVal() == "enemy")
         {
           g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), 50.0f);
         }
-        GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", projectileName, hitName);
+        GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", projectileName.c_str(), hitName.c_str());
       });
     }
 
     return NullSignal;
   }
 
-  String ShootState::Signaled(SignalId signal)
+  String PlayerShootState::Signaled(SignalId signal)
   {
-    if (signal == CombatSignal::Hold)
+    if (signal == PlayerCombatSignal::Hold)
     {
-      return CombatState::Hold;
+      return PlayerCombatState::Hold;
     }
 
-    return CombatState::Null;
+    return PlayerCombatState::Null;
   }
 
   void PlayerController::Init()
   {
     // movement states
-    StationaryState* stationaryState = new StationaryState();
-    m_movementStateMachine.PushState(stationaryState);
+    PlayerStationaryState* playerStationaryState = new PlayerStationaryState();
+    m_PlayerMovementStateMachine.PushState(playerStationaryState);
 
-    WalkState* walkState = new WalkState();
-    m_movementStateMachine.PushState(walkState);
+    PlayerWalkState* playerWalkState = new PlayerWalkState();
+    m_PlayerMovementStateMachine.PushState(playerWalkState);
 
     // Start with stationary state
-    m_movementStateMachine.m_currentState = stationaryState;
+    m_PlayerMovementStateMachine.m_currentState = playerStationaryState;
 
     // combat states
-    HoldState* holdState = new HoldState();
-    m_combatStateMachine.PushState(holdState);
+    PlayerHoldState* playerHoldState = new PlayerHoldState();
+    m_PlayerCombatStateMachine.PushState(playerHoldState);
 
-    ShootState* shootState = new ShootState();
-    m_combatStateMachine.PushState(shootState);
+    PlayerShootState* playerShootState = new PlayerShootState();
+    m_PlayerCombatStateMachine.PushState(playerShootState);
 
     // Start with hold state
-    m_combatStateMachine.m_currentState = holdState;
+    m_PlayerCombatStateMachine.m_currentState = playerHoldState;
   }
 
   void PlayerController::Update(float deltaTime)
@@ -189,7 +189,7 @@ namespace ToolKit
       m_pointOnPlaneValid = false;
     }
 
-    m_combatStateMachine.Update(deltaTime);
-    m_movementStateMachine.Update(deltaTime);
+    m_PlayerCombatStateMachine.Update(deltaTime);
+    m_PlayerMovementStateMachine.Update(deltaTime);
   }
 }

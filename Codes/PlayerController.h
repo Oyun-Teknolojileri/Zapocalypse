@@ -9,11 +9,11 @@
 
 namespace ToolKit
 {
-  class BaseState : public State
+  class PlayerBaseState : public State
   {
    public:
-    BaseState() {}
-    virtual ~BaseState() {}
+    PlayerBaseState() {}
+    virtual ~PlayerBaseState() {}
     void TransitionIn(State* prevState) override {}
     void TransitionOut(State* nextState) override {}
   };
@@ -21,14 +21,14 @@ namespace ToolKit
   // Movement State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class MovementSignal
+  class PlayerMovementSignal
   {
    public:
     static SignalId Move = 1;
     static SignalId Stop = 2;
   };
 
-  class MovementState
+  class PlayerMovementState
   {
    public:
     static String Null;
@@ -36,32 +36,32 @@ namespace ToolKit
     static String Walk;
   };
 
-  class StationaryState : public BaseState
+  class PlayerStationaryState : public PlayerBaseState
   {
    public:
-    StationaryState() {}
-    virtual ~StationaryState() {}
+    PlayerStationaryState() {}
+    virtual ~PlayerStationaryState() {}
 
     SignalId Update(float deltaTime) override;
     String Signaled(SignalId signal) override;
-    String GetType() override { return MovementState::Stationary; }
+    String GetType() override { return PlayerMovementState::Stationary; }
   };
 
-  class WalkState : public BaseState
+  class PlayerWalkState : public PlayerBaseState
   {
    public:
-    WalkState() {}
-    virtual ~WalkState() {}
+    PlayerWalkState() {}
+    virtual ~PlayerWalkState() {}
 
     SignalId Update(float deltaTime) override;
     String Signaled(SignalId signal) override;
-    String GetType() override { return MovementState::Walk; }
+    String GetType() override { return PlayerMovementState::Walk; }
   };
 
   // Combat State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class CombatSignal
+  class PlayerCombatSignal
   {
    public:
     static SignalId Hold = 1;
@@ -69,7 +69,7 @@ namespace ToolKit
     // TODO static SignalId Reload = 3;
   };
 
-  class CombatState
+  class PlayerCombatState
   {
    public:
     static String Null;
@@ -78,26 +78,26 @@ namespace ToolKit
     // TODO static String Reload;
   };
 
-  class HoldState : public BaseState
+  class PlayerHoldState : public PlayerBaseState
   {
    public:
-    HoldState() {}
-    virtual ~HoldState() {}
+    PlayerHoldState() {}
+    virtual ~PlayerHoldState() {}
 
     SignalId Update(float deltaTime) override;
     String Signaled(SignalId signal) override;
-    String GetType() override { return CombatState::Hold; }
+    String GetType() override { return PlayerCombatState::Hold; }
   };
 
-  class ShootState : public BaseState
+  class PlayerShootState : public PlayerBaseState
   {
    public:
-    ShootState() {}
-    virtual ~ShootState() {}
+    PlayerShootState() {}
+    virtual ~PlayerShootState() {}
 
     SignalId Update(float deltaTime) override;
     String Signaled(SignalId signal) override;
-    String GetType() override { return CombatState::Shoot; }
+    String GetType() override { return PlayerCombatState::Shoot; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -150,8 +150,8 @@ namespace ToolKit
       PlayerController() {}
 
      public:
-      StateMachine m_movementStateMachine;
-      StateMachine m_combatStateMachine;
+      StateMachine m_PlayerMovementStateMachine;
+      StateMachine m_PlayerCombatStateMachine;
 
       Entity* m_playerPrefab = nullptr;
 
