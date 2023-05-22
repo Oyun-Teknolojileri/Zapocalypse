@@ -20,6 +20,14 @@
 					<P t="10" name="CastShadow" category="Mesh Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
 				</PB>
 			</Component>
+			<Component t="3" MaterialCount="1">
+				<PB>
+					<P t="13" name="Material" category="Material Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
+				</PB>
+				<0>
+					<ResourceRef Type="3" File="EnemyMaterial.material"/>
+				</0>
+			</Component>
 		</Components>
 	</E>
 	<E t="15" i="2" pi="1">

@@ -19,6 +19,6 @@ namespace ToolKit
     float m_enemyWalkSpeed = 0.001f;
     float m_playerWalkSpeed = 0.01f;
     float m_projectileSpeed = 0.05f;
-    float m_projectileCooldown = 100.0f;
+    float m_projectileCooldown = 500.0f;
   };
 }
