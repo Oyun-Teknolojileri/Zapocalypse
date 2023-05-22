@@ -6,3 +6,6 @@
 [+] (FIXED)HUGE BUG: ChARACTER ROTATION
 [+] shoot enemies
 [ ] enemy ai (using state machine)
+	[+] movement
+	[ ] decision
+	[ ] combat

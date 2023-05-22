@@ -125,13 +125,12 @@ namespace ToolKit
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
       g_gameGlobals.m_playerController->m_projectileSpeed, [](Entity* projectile, Entity* hit)
       {
-        String projectileName = projectile->GetNameVal(); // Allocates memory, temporary test code
-        String hitName = hit->GetNameVal();               // Allocates memory, temporary test code
         if (hit->GetTagVal() == "enemy")
         {
-          g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), 50.0f);
+          constexpr float damage = 150.0f;
+          g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), damage);
+          GetLogger()->WriteConsole(LogType::Command, "Enemy Hit");
         }
-        GetLogger()->WriteConsole(LogType::Warning, "%s shoots %s.", projectileName.c_str(), hitName.c_str());
       });
     }
 
