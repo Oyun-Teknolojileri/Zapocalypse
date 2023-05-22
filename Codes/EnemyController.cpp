@@ -6,6 +6,9 @@ namespace ToolKit
 {
   GameGlobals g_gameGlobals;
 
+  // Movement State Machine
+  //////////////////////////////////////////////////////////////////////////
+
   String EnemyMovementState::Null = "";
   String EnemyMovementState::Stationary = "Stationary";
   String EnemyMovementState::Walk = "Walk";
@@ -25,10 +28,37 @@ namespace ToolKit
     return EnemyMovementState::Null;
   }
 
+  void EnemyWalkState::TransitionIn(State* prevState)
+  {
+    EnemyBaseState::TransitionIn(prevState);
+    m_enemy->m_destionationReached = false; 
+  }
+
+  void EnemyWalkState::TransitionOut(State* nextState)
+  {
+    EnemyBaseState::TransitionOut(nextState);
+    m_enemy->m_destionationReached = true; 
+  }
+
   SignalId EnemyWalkState::Update(float deltaTime)
   {
     m_enemy->m_enemyPrefab->m_node->Translate(m_enemy->m_movementTargetDir * g_gameGlobals.m_enemyController->m_enemyWalkSpeed * deltaTime);
-    
+
+    // destination is passed if the sign of any element for the vector (enemy pos -> target pos) is different than the direction
+    const Vec3 currentPos = m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    if
+    (
+      GameUtils::Sgn(m_enemy->m_movementTargetPos.x - currentPos.x) != GameUtils::Sgn(m_enemy->m_movementTargetDir.x) ||
+      GameUtils::Sgn(m_enemy->m_movementTargetPos.y - currentPos.y) != GameUtils::Sgn(m_enemy->m_movementTargetDir.y) ||
+      GameUtils::Sgn(m_enemy->m_movementTargetPos.z - currentPos.z) != GameUtils::Sgn(m_enemy->m_movementTargetDir.z)
+    )
+    {
+      // translate to the destination
+      m_enemy->m_enemyPrefab->m_node->SetTranslation(m_enemy->m_movementTargetPos);
+
+      return PlayerMovementSignal::Stop;
+    }
+
     return NullSignal;
   }
 
@@ -42,6 +72,72 @@ namespace ToolKit
     return EnemyMovementState::Null;
   }
 
+  // Decision State Machine
+  //////////////////////////////////////////////////////////////////////////
+
+  String EnemyDecisionState::Null = "Null";
+  String EnemyDecisionState::Patrol = "Patrol";
+  String EnemyDecisionState::Attack = "Attack";
+
+  void EnemyPatrolState::TransitionIn(State* prevState)
+  {
+    EnemyBaseState::TransitionIn(prevState);
+    SetNextTarget();
+  }
+
+  SignalId EnemyPatrolState::Update(float deltaTime)
+  {
+    const Vec3Array patrolPoints = g_gameGlobals.m_enemyController->GetPatrolPoints();
+
+    // patrol
+    if (m_enemy->m_destionationReached)
+    {
+      SetNextTarget();
+    }
+
+    // signal if see player
+
+    return NullSignal;
+  }
+
+  String EnemyPatrolState::Signaled(SignalId signal)
+  {
+    if (signal == EnemyDecisionSignal::Attack)
+    {
+      return EnemyDecisionState::Attack;
+    }
+    
+    return EnemyDecisionState::Null;
+  }
+
+  void EnemyPatrolState::SetNextTarget()
+  {
+    m_enemy->SetMovementTarget(g_gameGlobals.m_enemyController->GetPatrolPoints()[m_enemy->m_lastPatrolIndex]);
+    m_enemy->m_movementSM.Signal(EnemyMovementSignal::Move);
+    m_enemy->m_lastPatrolIndex = (m_enemy->m_lastPatrolIndex + 1) % g_gameGlobals.m_enemyController->GetPatrolPoints().size();
+  }
+
+  SignalId EnemyAttackState::Update(float deltaTime)
+  {
+    // TODO
+    // enemy-> movement state stop
+    // attack to player
+
+    return NullSignal;
+  }
+
+  String EnemyAttackState::Signaled(SignalId signal)
+  {
+    if (signal == EnemyDecisionSignal::Patrol)
+    {
+      return EnemyDecisionState::Patrol;
+    }
+
+    return EnemyDecisionState::Null;
+  }
+
+  //////////////////////////////////////////////////////////////////////////
+
   Enemy::Enemy(Entity* prefab, EnemyController* controller)
   {
     m_enemyPrefab = prefab;
@@ -49,6 +145,7 @@ namespace ToolKit
     m_enemyController = controller;
     m_movementTargetPos = ZERO;
     m_movementTargetDir = ZERO;
+    m_destionationReached = false;
   }
 
   Enemy::~Enemy()
@@ -59,6 +156,7 @@ namespace ToolKit
 
   void Enemy::Update(float deltaTime)
   {
+    m_decisionSM.Update(deltaTime);
     m_movementSM.Update(deltaTime);
   }
 
@@ -83,6 +181,7 @@ namespace ToolKit
   void Enemy::SetMovementTarget(const Vec3 target)
   {
     const Vec3 pos = m_enemyPrefab->m_node->GetTranslation();
+    m_movementTargetPos = target;
     m_movementTargetDir = glm::normalize(target - pos);
     m_enemyPrefab->m_node->SetOrientation(GameUtils::QuatLookAtRH(m_movementTargetDir));
   }
@@ -96,19 +195,46 @@ namespace ToolKit
     m_enemies.clear();
   }
 
-  void EnemyController::Init()
+  void EnemyController::Init(const ScenePtr scene)
   {
+    // Accumulate patrol points in the scene
+    bool noPoints = true;
+    for (Entity* ntt : scene->GetByTag("pp"))
+    {
+      m_patrolPoints.push_back(ntt->m_node->GetTranslation());
+      noPoints = false;
+    }
+    if (noPoints)
+    {
+      GetLogger()->WriteConsole(LogType::Warning, "No patrol points found in the scene! Using default two points.");
+      m_patrolPoints.push_back(ZERO);
+      m_patrolPoints.push_back(Vec3(5.0f, 0.75f, 5.0f));
+    }
+
     // Fill the state machines of the enemies
     for (std::pair<ULongID, Enemy*> element : m_enemies)
     {
+      // movement states
       Enemy* enemy = element.second;
-      EnemyStationaryState* ess = new EnemyStationaryState(enemy);
-      enemy->m_movementSM.PushState(ess);
+      EnemyStationaryState* ss = new EnemyStationaryState(enemy);
+      enemy->m_movementSM.PushState(ss);
 
-      EnemyWalkState* ews = new EnemyWalkState(enemy);
-      enemy->m_movementSM.PushState(ews);
+      EnemyWalkState* ws = new EnemyWalkState(enemy);
+      enemy->m_movementSM.PushState(ws);
 
-      enemy->m_movementSM.m_currentState = ess;
+      enemy->m_movementSM.m_currentState = ss;
+
+      // decision states
+      EnemyPatrolState* ps = new EnemyPatrolState(enemy);
+      enemy->m_decisionSM.PushState(ps);
+
+      EnemyAttackState* as = new EnemyAttackState(enemy);
+      enemy->m_decisionSM.PushState(as);
+
+      enemy->m_decisionSM.m_currentState = ps;
+
+      ps->SetNextTarget(); // Set next target of the enemy
+      // Note: State machine does not call TransitionIn() for the first state when Update() is called.
     }
   }
 

@@ -53,7 +53,7 @@ namespace ToolKit
     {
       g_gameGlobals.m_enemyController->AddEnemy(enemyPrefabEntity);
     }
-    g_gameGlobals.m_enemyController->Init();
+    g_gameGlobals.m_enemyController->Init(g_gameGlobals.m_currentScene);
 
     // Player controller
     g_gameGlobals.m_playerController = new PlayerController(m_playerPrefab);

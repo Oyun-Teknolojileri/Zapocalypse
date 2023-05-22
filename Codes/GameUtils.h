@@ -38,6 +38,13 @@ namespace ToolKit
       return vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
     }
 
+    // https://stackoverflow.com/questions/1903954/is-there-a-standard-sign-function-signum-sgn-in-c-c
+    template <typename T>
+    inline static int Sgn(T val)
+    {
+      return (T(0) < val) - (val < T(0));
+    }
+
     private:
     inline static Viewport* GameViewport = nullptr;
     inline static float SceneFloorY = 0.0f;

@@ -60,6 +60,51 @@ namespace ToolKit
     SignalId Update(float deltaTime) override;
     String Signaled(SignalId signal) override;
     String GetType() override { return EnemyMovementState::Walk; }
+    void TransitionIn(State* prevState) override;
+    void TransitionOut(State* nextState) override;
+  };
+
+  // Decision State Machine
+  //////////////////////////////////////////////////////////////////////////
+
+  class EnemyDecisionSignal
+  {
+   public:
+    static SignalId Patrol = 1;
+    static SignalId Attack = 2;
+  };
+
+  class EnemyDecisionState
+  {
+   public:
+    static String Null;
+    static String Patrol;
+    static String Attack;
+  };
+
+  class EnemyPatrolState : public EnemyBaseState
+  {
+   public:
+    EnemyPatrolState(Enemy* enemy) : EnemyBaseState(enemy) {}
+    virtual ~EnemyPatrolState() {}
+
+    SignalId Update(float deltaTime) override;
+    String Signaled(SignalId signal) override;
+    String GetType() override { return EnemyDecisionState::Patrol; }
+    void TransitionIn(State* prevState) override;
+
+    void SetNextTarget();
+  };
+
+  class EnemyAttackState : public EnemyBaseState
+  {
+   public:
+    EnemyAttackState(Enemy* enemy) : EnemyBaseState(enemy) {}
+    virtual ~EnemyAttackState() {}
+
+    SignalId Update(float deltaTime) override;
+    String Signaled(SignalId signal) override;
+    String GetType() override { return EnemyDecisionState::Attack; }
   };
 
   //////////////////////////////////////////////////////////////////////////
@@ -70,6 +115,8 @@ namespace ToolKit
     friend EnemyBaseState;
     friend EnemyStationaryState;
     friend EnemyWalkState;
+    friend EnemyPatrolState;
+    friend EnemyAttackState;
 
     public:
     Enemy(Entity* entity, class EnemyController* controller);
@@ -91,10 +138,13 @@ namespace ToolKit
     EnemyController* m_enemyController = nullptr;
 
     StateMachine m_movementSM;
-    // TODO StateMachine m_decisionSM; // Combat SM can be seperable, but since it is very simple it is being handled here
+    StateMachine m_decisionSM; // Combat SM can be seperable, but since it is very simple it is being handled here
 
     Vec3 m_movementTargetPos;
     Vec3 m_movementTargetDir;
+    bool m_destionationReached;
+    
+    unsigned int m_lastPatrolIndex = 0;
   };
 
   class EnemyController
@@ -102,17 +152,19 @@ namespace ToolKit
     public:
     ~EnemyController();
 
-    void Init();
+    void Init(const ScenePtr scene);
     void AddEnemy(Entity* entity);
     void Update(float deltaTime);
     void HitEnemy(ULongID id, float damageAmount);
     void KillEnemy(ULongID id);
 
+    inline Vec3Array GetPatrolPoints() const { return m_patrolPoints; }
+
     public:
-    float m_enemyWalkSpeed = 0.001f;
+    float m_enemyWalkSpeed = 0.008f;
 
     private:
     std::unordered_map<ULongID, Enemy*> m_enemies;
-
+    Vec3Array m_patrolPoints;
   };
 };
