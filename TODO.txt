@@ -5,7 +5,6 @@
 [+] shooting controls (top-down shooter)
 [+] (FIXED)HUGE BUG: ChARACTER ROTATION
 [+] shoot enemies
-[ ] enemy ai (using state machine)
+[+] enemy ai (using state machine)
 	[+] movement
-	[ ] decision
-	[ ] combat
+	[+] decision

@@ -127,6 +127,23 @@ namespace ToolKit
     void Die();
 
     void SetMovementTarget(const Vec3 targetPos);
+    inline Vec3 GetProjectileStartPos()
+    {
+      static Vec3 muzzlePos = ZERO;
+      static bool found = false;
+      if (!found)
+      {
+        for (Node* childNode : m_enemyPrefab->m_node->m_children[0]->m_children)
+        {
+          if (childNode->m_entity->GetTagVal() == "enemyMuzzlePos")
+          {
+            muzzlePos = childNode->GetTranslation();
+            break;
+          }
+        }
+      }
+      return muzzlePos;
+    }
 
     private:
     Enemy() {}
@@ -161,7 +178,6 @@ namespace ToolKit
     inline Vec3Array GetPatrolPoints() const { return m_patrolPoints; }
 
     public:
-    float m_enemyWalkSpeed = 0.008f;
 
     private:
     std::unordered_map<ULongID, Enemy*> m_enemies;

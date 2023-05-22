@@ -15,5 +15,10 @@ namespace ToolKit
     class InputManager* m_inputManager = nullptr;
     class ProjectileManager* m_projectileManager = nullptr;
     ScenePtr m_currentScene = nullptr;
+
+    float m_enemyWalkSpeed = 0.001f;
+    float m_playerWalkSpeed = 0.01f;
+    float m_projectileSpeed = 0.05f;
+    float m_projectileCooldown = 100.0f;
   };
 }

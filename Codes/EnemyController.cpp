@@ -1,6 +1,8 @@
 #include "EnemyController.h"
+#include <memory>
 #include "GameGlobals.h"
 #include "PlayerController.h"
+#include "ProjectileManager.h"
 
 namespace ToolKit
 {
@@ -42,7 +44,7 @@ namespace ToolKit
 
   SignalId EnemyWalkState::Update(float deltaTime)
   {
-    m_enemy->m_enemyPrefab->m_node->Translate(m_enemy->m_movementTargetDir * g_gameGlobals.m_enemyController->m_enemyWalkSpeed * deltaTime);
+    m_enemy->m_enemyPrefab->m_node->Translate(m_enemy->m_movementTargetDir * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
 
     // destination is passed if the sign of any element for the vector (enemy pos -> target pos) is different than the direction
     const Vec3 currentPos = m_enemy->m_enemyPrefab->m_node->GetTranslation();
@@ -95,7 +97,13 @@ namespace ToolKit
       SetNextTarget();
     }
 
-    // signal if see player
+    // if the player is visible, go attack state
+    constexpr float angle = 0.707f; // (45 + 45) 90 degrees
+    const Vec3 dir = glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - m_enemy->m_enemyPrefab->m_node->GetTranslation());
+    if (glm::dot(m_enemy->m_enemyPrefab->GetComponent<DirectionComponent>()->GetDirection(), dir) > angle)
+    {
+      return EnemyDecisionSignal::Attack;
+    }
 
     return NullSignal;
   }
@@ -119,9 +127,32 @@ namespace ToolKit
 
   SignalId EnemyAttackState::Update(float deltaTime)
   {
-    // TODO
-    // enemy-> movement state stop
-    // attack to player
+    // TODO better combat implementation can be implemented.
+    // For simplicity I just stop the enemy and start shooting projectiles.
+
+    // stop the movement
+    m_enemy->m_movementSM.Signal(EnemyMovementSignal::Stop);
+
+    // turn to the player
+    const Vec3 dir = g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    m_enemy->m_enemyPrefab->m_node->SetOrientation(GameUtils::QuatLookAtRH(dir));
+
+    // fire projectiles
+    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
+    pastTime += deltaTime;
+    if (pastTime > g_gameGlobals.m_projectileCooldown)
+    {
+      pastTime -= g_gameGlobals.m_projectileCooldown;
+      const Vec3 projectileStartPos = m_enemy->GetProjectileStartPos();
+      g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - projectileStartPos),
+      g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
+      {
+        if (hit->GetTagVal() == "player")
+        {
+          GetLogger()->WriteConsole(LogType::Command, "Player Hit");
+        }
+      });
+    }
 
     return NullSignal;
   }
@@ -146,6 +177,9 @@ namespace ToolKit
     m_movementTargetPos = ZERO;
     m_movementTargetDir = ZERO;
     m_destionationReached = false;
+
+    // add direction component to enemy prefab
+    m_enemyPrefab->AddComponent(std::make_shared<DirectionComponent>());
   }
 
   Enemy::~Enemy()

@@ -128,7 +128,7 @@ namespace ToolKit
         {
           for (Node* node : m_playerPrefab->m_node->m_children[0]->m_children)
           {
-            if (node->m_entity->GetTagVal() == "projectileStartPos")
+            if (node->m_entity->GetTagVal() == "playerMuzzlePos")
             {
               projectileStartPosNode = node;
               break;
@@ -157,11 +157,6 @@ namespace ToolKit
 
       bool m_pointOnPlaneValid = false;
       Vec3 m_pointOnPlane = ZERO;
-
-      float m_playerWalkSpeed = 0.01f;
-
-      float m_projectileSpeed = 0.05f;
-      float m_projectileCooldown = 100.0f;
 
       ScenePtr m_scene = nullptr;
   };

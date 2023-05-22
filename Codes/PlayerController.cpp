@@ -42,7 +42,7 @@ namespace ToolKit
 
     // Player movement
 
-    const float speed = deltaTime * g_gameGlobals.m_playerController->m_playerWalkSpeed;
+    const float speed = deltaTime * g_gameGlobals.m_playerWalkSpeed;
     static const Vec3 up = glm::normalize(Vec3(-1.0f, 0.0f, -1.0f));
     static const Vec3 down = glm::normalize(Vec3(1.0f, 0.0f, 1.0f));
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
@@ -114,16 +114,17 @@ namespace ToolKit
     }
 
     // TODO Shoot projectile based on rate of fire based on time (find a solution for how to shoot between frames when update misses the time of shoot (which will always happen))
+    // Same implementation for enemy too.
 
     // Shoot
-    static float pastTime = g_gameGlobals.m_playerController->m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > g_gameGlobals.m_playerController->m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_projectileCooldown)
     {
-      pastTime -= g_gameGlobals.m_playerController->m_projectileCooldown;
+      pastTime -= g_gameGlobals.m_projectileCooldown;
       const Vec3 projectileStartPos = g_gameGlobals.m_playerController->GetProjectileStartPos();
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
-      g_gameGlobals.m_playerController->m_projectileSpeed, [](Entity* projectile, Entity* hit)
+      g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
       {
         if (hit->GetTagVal() == "enemy")
         {
