@@ -66,10 +66,10 @@ namespace ToolKit
 
   void ProjectileManager::UpdateProjectiles(float deltaTime)
   {
-    auto IsIdInListFn = [](const std::vector<ULongID>& list, ULongID id)
+    auto IsInArrayFn = [](const EntityIdArray& list, Entity* obj)
     {
-      for (ULongID listId : list)
-        if (listId == id)
+      for (ULongID id : list)
+        if (id == obj->GetIdVal())
           return true;
       return false;
     };
@@ -97,12 +97,35 @@ namespace ToolKit
   
       projectile.entity->m_node->Translate(projectile.direction * projectile.speed * deltaTime);
 
+      StringArray ignoredTags =
+      {
+        "ignore-me",
+        "mainCam",
+        "light",
+        "pr"
+      };
+
+      // Tag anything that will be ignored.
+      // You can concatenate tags from the editor with "."
+      // EX: tag = "first.second.ignore"
+      // when you query an object with tag "first", "second" or "ignore" , it will the entity with the above tag.
+      EntityRawPtrArray projectileIgnored;
+      for (const String& tag : ignoredTags)
+      {
+        EntityRawPtrArray concatList = m_scene->GetByTag(tag);
+        projectileIgnored.insert(projectileIgnored.end(), concatList.begin(), concatList.end());
+      }
+      
+      EntityIdArray ignoredHandles;
+      ToEntityIdArray(ignoredHandles, projectileIgnored);
+
+      ignoredHandles.insert(ignoredHandles.end(), m_projectileHitIgnoreList.begin(), m_projectileHitIgnoreList.end());
+
       // Collision check with the environment in the scene
       for (Entity* object : m_scene->GetEntities())
       {
         // Ignored entities
-        if (object->GetMeshComponent() == nullptr || IsIdInListFn(m_projectileHitIgnoreList, object->GetIdVal())
-          || object->GetTagVal() == "mainCam" || object->GetTagVal() == "light" || object->GetTagVal() == "pr") 
+        if (object->GetMeshComponent() == nullptr || IsInArrayFn(ignoredHandles, object)) 
         {
           continue;
         }
