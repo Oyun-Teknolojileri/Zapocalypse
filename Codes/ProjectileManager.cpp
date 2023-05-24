@@ -108,7 +108,7 @@ namespace ToolKit
       // Tag anything that will be ignored.
       // You can concatenate tags from the editor with "."
       // EX: tag = "first.second.ignore"
-      // when you query an object with tag "first", "second" or "ignore" , it will the entity with the above tag.
+      // when you query an object with tag "first", "second" or "ignore" , it will ignore the entity with the above tag.
       EntityRawPtrArray projectileIgnored;
       for (const String& tag : ignoredTags)
       {
