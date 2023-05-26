@@ -134,8 +134,12 @@ namespace ToolKit
     m_enemy->m_movementSM.Signal(EnemyMovementSignal::Stop);
 
     // turn to the player
-    const Vec3 dir = g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    const Vec3 pos =  m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    const Vec3 dir = glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - pos);
     m_enemy->m_enemyPrefab->m_node->SetOrientation(GameUtils::QuatLookAtRH(dir));
+
+    // move to the player
+    m_enemy->m_enemyPrefab->m_node->Translate(dir * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
 
     // fire projectiles
     static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
