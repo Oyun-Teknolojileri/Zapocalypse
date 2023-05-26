@@ -174,8 +174,7 @@ namespace ToolKit
   void PlayerController::Update(float deltaTime)
   {
     // Create a plane little above floor and shoot ray from mouse to it. The intersecion point is used by multiple features.
-    static const PlaneEquation planeAboveFloor =
-    {Vec3(0.0f, 1.0f, 0.0f), GameUtils::GetFloorY() + m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f};
+    const PlaneEquation planeAboveFloor = GameUtils::GetPlaneAboveFloor();
     const Ray ray = GameUtils::GetRayFromMousePosition();
     float t;
     RayPlaneIntersection(ray, planeAboveFloor, t);

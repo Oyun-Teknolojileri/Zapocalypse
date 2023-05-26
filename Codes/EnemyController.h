@@ -177,7 +177,9 @@ namespace ToolKit
 
     inline Vec3Array GetPatrolPoints() const { return m_patrolPoints; }
 
-    public:
+    private:
+    void FillEnemyStates(Enemy* enemy);
+    void SpawnEnemy();
 
     private:
     std::unordered_map<ULongID, Enemy*> m_enemies;

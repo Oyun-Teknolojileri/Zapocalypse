@@ -1,5 +1,6 @@
 #include "EnemyController.h"
 #include <memory>
+#include <cstdlib>
 #include "GameGlobals.h"
 #include "PlayerController.h"
 #include "ProjectileManager.h"
@@ -128,7 +129,6 @@ namespace ToolKit
   SignalId EnemyAttackState::Update(float deltaTime)
   {
     // TODO better combat implementation can be implemented.
-    // For simplicity I just stop the enemy and start shooting projectiles.
 
     // stop the movement
     m_enemy->m_movementSM.Signal(EnemyMovementSignal::Stop);
@@ -252,8 +252,13 @@ namespace ToolKit
     // Fill the state machines of the enemies
     for (std::pair<ULongID, Enemy*> element : m_enemies)
     {
+      FillEnemyStates(element.second);
+    }
+  }
+
+  void EnemyController::FillEnemyStates(Enemy* enemy)
+  {
       // movement states
-      Enemy* enemy = element.second;
       EnemyStationaryState* ss = new EnemyStationaryState(enemy);
       enemy->m_movementSM.PushState(ss);
 
@@ -273,7 +278,6 @@ namespace ToolKit
 
       ps->SetNextTarget(); // Set next target of the enemy
       // Note: State machine does not call TransitionIn() for the first state when Update() is called.
-    }
   }
 
   void EnemyController::AddEnemy(Entity* entity)
@@ -283,6 +287,11 @@ namespace ToolKit
 
   void EnemyController::Update(float deltaTime)
   {
+    if (m_enemies.size() < g_gameGlobals.m_minEnemyCount)
+    {
+      SpawnEnemy();
+    }
+
     for (std::pair<ULongID, Enemy*> element : m_enemies)
     {
       element.second->Update(deltaTime);
@@ -306,5 +315,24 @@ namespace ToolKit
       m_enemies.erase(it);
       delete enemy;
     }
+  }
+
+  void EnemyController::SpawnEnemy()
+  {
+    const float y = GameUtils::GetFloorY() + GameUtils::GetHalfPlayerHeight();
+    const BoundingBox floorBB = GameUtils::GetFloorBB();
+    const int height = static_cast<int>(floorBB.max.x - floorBB.min.x) / 2;
+    const int width = static_cast<int>(floorBB.max.z - floorBB.min.z) / 2;
+    const Vec3 center = floorBB.GetCenter();
+    const float x = (rand() % width) + center.x;
+    const float z = (rand() % height) + center.z;
+    const Vec3 pos = {x, y, z};
+
+    Entity* newEnemyPrefab = GameUtils::AddCopyOfEnemyPrefabToScene();
+    newEnemyPrefab->SetTagVal("enemyPrefab");
+    newEnemyPrefab->m_node->SetTranslation(pos);
+    AddEnemy(newEnemyPrefab);
+    FillEnemyStates(m_enemies[newEnemyPrefab->GetIdVal()]);
+    m_enemies[newEnemyPrefab->GetIdVal()]->m_decisionSM.Signal(EnemyDecisionSignal::Attack);
   }
 };

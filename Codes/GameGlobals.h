@@ -20,5 +20,6 @@ namespace ToolKit
     float m_playerWalkSpeed = 0.01f;
     float m_projectileSpeed = 0.05f;
     float m_projectileCooldown = 500.0f;
+    int m_minEnemyCount = 2;
   };
 }

@@ -28,6 +28,10 @@ namespace ToolKit
     // Floor entity
     m_floor = g_gameGlobals.m_currentScene->GetFirstByTag("floor");
 
+    // Floor border coordinates
+    // Note: If the floor size is changable, update this variable every frame
+    GameUtils::FloorBoundingBox = m_floor->GetAABB(true);
+
     // Player prefab
     m_playerPrefab = g_gameGlobals.m_currentScene->GetFirstByTag("playerPrefab");
     m_playerPrefab->AddComponent(std::make_shared<DirectionComponent>()); // Add direction component
@@ -35,6 +39,9 @@ namespace ToolKit
     Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
     float halfHeight = m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
     m_playerPrefab->m_node->SetTranslation(Vec3(playerPos.x, m_floor->m_node->GetTranslation().y + halfHeight, playerPos.z));
+
+    // Note: If the player size is changable, update this variable every frame
+    GameUtils::HalfPlayerHeight = m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
 
     // Projectile start pos
     Vec3 projectileStartPos = ZERO;
@@ -48,6 +55,7 @@ namespace ToolKit
     }
 
     // Enemy controller
+    GameUtils::EnemyPrefabPath = "EnemyPrefab.scene";
     g_gameGlobals.m_enemyController = new EnemyController();
     for (Entity* enemyPrefabEntity : g_gameGlobals.m_currentScene->GetByTag("enemyPrefab"))
     {
@@ -75,11 +83,16 @@ namespace ToolKit
     SafeDel(g_gameGlobals.m_projectileManager);
     SafeDel(g_gameGlobals.m_enemyController);
 
+    g_gameGlobals.m_currentScene->ClearEntities();
+
     delete this;
   }
 
   void Game::Frame(float deltaTime, class Viewport* viewport)
   {
+    // TODOD debug
+    ScenePtr s = g_gameGlobals.m_currentScene;
+
     viewport->AttachCamera(m_mainCam->GetIdVal());
 
     GameUtils::GameViewport = viewport;
@@ -109,7 +122,7 @@ namespace ToolKit
 
   void Game::UpdateCameraPosition()
   {
-    static const Vec3 cameraDistance = Vec3(5.0f, 5.0f, 5.0f);
+    static const Vec3 cameraDistance = Vec3(5.0f, 5.0f, 5.0f) * 2.0f;
     const Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
     const Vec3 targetPos = playerPos + cameraDistance;
     const Vec3 delta = targetPos - m_mainCam->m_node->GetTranslation();

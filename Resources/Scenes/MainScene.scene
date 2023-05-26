@@ -6,7 +6,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932829"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87726"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="GradientSky"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v=""/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -53,7 +53,7 @@
 			<S x="50.000000" y="0.300000" z="50.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932830"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87727"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="Floor"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="floor"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -72,7 +72,7 @@
 					<P t="13" name="Material" category="Material Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
 				</PB>
 				<0>
-					<ResourceRef Type="3" File="Resource_1052.material"/>
+					<ResourceRef Type="3" File="FloorMaterial.material"/>
 				</0>
 			</Component>
 		</Components>
@@ -84,7 +84,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932831"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87728"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="DirectionalLight"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v=""/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -102,6 +102,17 @@
 			<Component t="2">
 				<PB/>
 			</Component>
+			<Component t="3" MaterialCount="2">
+				<PB>
+					<P t="13" name="Material" category="Material Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
+				</PB>
+				<0>
+					<ResourceRef Type="3" File="Resource_1090.material"/>
+				</0>
+				<1>
+					<ResourceRef Type="3" File="Resource_1092.material"/>
+				</1>
+			</Component>
 		</Components>
 	</E>
 	<E t="13" i="4">
@@ -111,7 +122,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932832"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87729"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="MainCam"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="mainCam"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -143,7 +154,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932833"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87730"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PlayerPrefab"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="playerPrefab"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -164,7 +175,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932834"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87731"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PatrolPoint1"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="pp"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -179,7 +190,7 @@
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932835"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87732"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PatrolPoint2"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="pp"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -189,12 +200,12 @@
 	</E>
 	<E t="22" i="8">
 		<N is="0">
-			<T x="-9.044686" y="0.750000" z="-9.039704"/>
+			<T x="-6.794895" y="0.750000" z="-3.374838"/>
 			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
 			<S x="1.000000" y="1.000000" z="1.000000"/>
 		</N>
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="3932836"/>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87733"/>
 			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab1"/>
 			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="enemyPrefab"/>
 			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
@@ -204,8 +215,29 @@
 		<Components/>
 		<PrefabRoots>
 			<Enemy/>
-			<ProjectileStartPos/>
 			<Cone/>
+			<ProjectileStartPos/>
+		</PrefabRoots>
+	</E>
+	<E t="22" i="18">
+		<N is="0">
+			<T x="-0.931689" y="0.750000" z="-4.452109"/>
+			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+			<S x="1.000000" y="1.000000" z="1.000000"/>
+		</N>
+		<PB>
+			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="164203"/>
+			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab2"/>
+			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="enemyPrefab"/>
+			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
+			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
+			<P t="9" name="PrefabPath" category="Prefab" priority="90" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab.scene"/>
+		</PB>
+		<Components/>
+		<PrefabRoots>
+			<Enemy/>
+			<Cone/>
+			<ProjectileStartPos/>
 		</PrefabRoots>
 	</E>
 </S>
