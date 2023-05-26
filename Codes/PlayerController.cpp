@@ -117,11 +117,11 @@ namespace ToolKit
     // Same implementation for enemy too.
 
     // Shoot
-    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_playerProjectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > g_gameGlobals.m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_playerProjectileCooldown)
     {
-      pastTime -= g_gameGlobals.m_projectileCooldown;
+      pastTime -= g_gameGlobals.m_playerProjectileCooldown;
       const Vec3 projectileStartPos = g_gameGlobals.m_playerController->GetProjectileStartPos();
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
       g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)

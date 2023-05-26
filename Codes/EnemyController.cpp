@@ -142,11 +142,11 @@ namespace ToolKit
     m_enemy->m_enemyPrefab->m_node->Translate(dir * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
 
     // fire projectiles
-    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_enemyProjectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > g_gameGlobals.m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_enemyProjectileCooldown)
     {
-      pastTime -= g_gameGlobals.m_projectileCooldown;
+      pastTime -= g_gameGlobals.m_enemyProjectileCooldown;
       const Vec3 projectileStartPos = m_enemy->GetProjectileStartPos();
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - projectileStartPos),
       g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
@@ -321,11 +321,10 @@ namespace ToolKit
   {
     const float y = GameUtils::GetFloorY() + GameUtils::GetHalfPlayerHeight();
     const BoundingBox floorBB = GameUtils::GetFloorBB();
-    const int height = static_cast<int>(floorBB.max.x - floorBB.min.x) / 2;
-    const int width = static_cast<int>(floorBB.max.z - floorBB.min.z) / 2;
-    const Vec3 center = floorBB.GetCenter();
-    const float x = (rand() % width) + center.x;
-    const float z = (rand() % height) + center.z;
+    const int height = static_cast<int>(floorBB.max.x - floorBB.min.x);
+    const int width = static_cast<int>(floorBB.max.z - floorBB.min.z);
+    const float x = (rand() % width) + floorBB.min.x;
+    const float z = (rand() % height) + floorBB.min.z;
     const Vec3 pos = {x, y, z};
 
     Entity* newEnemyPrefab = GameUtils::AddCopyOfEnemyPrefabToScene();
