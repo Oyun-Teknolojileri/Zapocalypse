@@ -1,5 +1,6 @@
 #include "EnemyController.h"
 #include <memory>
+#include <cstdlib>
 #include "GameGlobals.h"
 #include "PlayerController.h"
 #include "ProjectileManager.h"
@@ -128,21 +129,24 @@ namespace ToolKit
   SignalId EnemyAttackState::Update(float deltaTime)
   {
     // TODO better combat implementation can be implemented.
-    // For simplicity I just stop the enemy and start shooting projectiles.
 
     // stop the movement
     m_enemy->m_movementSM.Signal(EnemyMovementSignal::Stop);
 
     // turn to the player
-    const Vec3 dir = g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    const Vec3 pos =  m_enemy->m_enemyPrefab->m_node->GetTranslation();
+    const Vec3 dir = glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - pos);
     m_enemy->m_enemyPrefab->m_node->SetOrientation(GameUtils::QuatLookAtRH(dir));
 
+    // move to the player
+    m_enemy->m_enemyPrefab->m_node->Translate(dir * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
+
     // fire projectiles
-    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_enemyProjectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > g_gameGlobals.m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_enemyProjectileCooldown)
     {
-      pastTime -= g_gameGlobals.m_projectileCooldown;
+      pastTime -= g_gameGlobals.m_enemyProjectileCooldown;
       const Vec3 projectileStartPos = m_enemy->GetProjectileStartPos();
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - projectileStartPos),
       g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
@@ -248,8 +252,13 @@ namespace ToolKit
     // Fill the state machines of the enemies
     for (std::pair<ULongID, Enemy*> element : m_enemies)
     {
+      FillEnemyStates(element.second);
+    }
+  }
+
+  void EnemyController::FillEnemyStates(Enemy* enemy)
+  {
       // movement states
-      Enemy* enemy = element.second;
       EnemyStationaryState* ss = new EnemyStationaryState(enemy);
       enemy->m_movementSM.PushState(ss);
 
@@ -269,7 +278,6 @@ namespace ToolKit
 
       ps->SetNextTarget(); // Set next target of the enemy
       // Note: State machine does not call TransitionIn() for the first state when Update() is called.
-    }
   }
 
   void EnemyController::AddEnemy(Entity* entity)
@@ -279,6 +287,11 @@ namespace ToolKit
 
   void EnemyController::Update(float deltaTime)
   {
+    if (m_enemies.size() < g_gameGlobals.m_minEnemyCount)
+    {
+      SpawnEnemy();
+    }
+
     for (std::pair<ULongID, Enemy*> element : m_enemies)
     {
       element.second->Update(deltaTime);
@@ -302,5 +315,23 @@ namespace ToolKit
       m_enemies.erase(it);
       delete enemy;
     }
+  }
+
+  void EnemyController::SpawnEnemy()
+  {
+    const float y = GameUtils::GetFloorY() + GameUtils::GetHalfPlayerHeight();
+    const BoundingBox floorBB = GameUtils::GetFloorBB();
+    const int height = static_cast<int>(floorBB.max.x - floorBB.min.x);
+    const int width = static_cast<int>(floorBB.max.z - floorBB.min.z);
+    const float x = (rand() % width) + floorBB.min.x;
+    const float z = (rand() % height) + floorBB.min.z;
+    const Vec3 pos = {x, y, z};
+
+    Entity* newEnemyPrefab = GameUtils::EnemyPrefabInstantiate();
+    newEnemyPrefab->SetTagVal("enemyPrefab");
+    newEnemyPrefab->m_node->SetTranslation(pos);
+    AddEnemy(newEnemyPrefab);
+    FillEnemyStates(m_enemies[newEnemyPrefab->GetIdVal()]);
+    m_enemies[newEnemyPrefab->GetIdVal()]->m_decisionSM.Signal(EnemyDecisionSignal::Attack);
   }
 };

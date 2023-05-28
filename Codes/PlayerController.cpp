@@ -117,11 +117,11 @@ namespace ToolKit
     // Same implementation for enemy too.
 
     // Shoot
-    static float pastTime = g_gameGlobals.m_projectileCooldown + 1.0f;
+    static float pastTime = g_gameGlobals.m_playerProjectileCooldown + 1.0f;
     pastTime += deltaTime;
-    if (pastTime > g_gameGlobals.m_projectileCooldown)
+    if (pastTime > g_gameGlobals.m_playerProjectileCooldown)
     {
-      pastTime -= g_gameGlobals.m_projectileCooldown;
+      pastTime -= g_gameGlobals.m_playerProjectileCooldown;
       const Vec3 projectileStartPos = g_gameGlobals.m_playerController->GetProjectileStartPos();
       g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
       g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
@@ -174,8 +174,7 @@ namespace ToolKit
   void PlayerController::Update(float deltaTime)
   {
     // Create a plane little above floor and shoot ray from mouse to it. The intersecion point is used by multiple features.
-    static const PlaneEquation planeAboveFloor =
-    {Vec3(0.0f, 1.0f, 0.0f), GameUtils::GetFloorY() + m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f};
+    const PlaneEquation planeAboveFloor = GameUtils::GetPlaneAboveFloor();
     const Ray ray = GameUtils::GetRayFromMousePosition();
     float t;
     RayPlaneIntersection(ray, planeAboveFloor, t);

@@ -1,6 +1,8 @@
 #pragma once
 #include "ToolKit.h"
 #include "MathUtil.h"
+#include "Prefab.h"
+#include "GameGlobals.h"
 
 namespace ToolKit
 {
@@ -10,6 +12,35 @@ namespace ToolKit
     friend class Game;
 
     public:
+
+    inline static Entity* EnemyPrefabInstantiate()
+    {
+      static Prefab* prefab = nullptr;
+      if (prefab == nullptr)
+      {
+        prefab = new Prefab();
+        prefab->SetPrefabPathVal(EnemyPrefabPath);
+        prefab->Init(g_gameGlobals.m_currentScene.get());
+      }
+
+      return prefab->Copy();
+    }
+
+    inline static BoundingBox GetFloorBB()
+    {
+      return FloorBoundingBox;
+    }
+
+    inline static float GetHalfPlayerHeight()
+    {
+      return HalfPlayerHeight;
+    }
+
+    inline static PlaneEquation GetPlaneAboveFloor()
+    {
+      return {Vec3(0.0f, 1.0f, 0.0f), SceneFloorY + HalfPlayerHeight};
+    }
+
     inline static Ray GetRayFromMousePosition()
     {
       return GameViewport->RayFromMousePosition();
@@ -48,5 +79,8 @@ namespace ToolKit
     private:
     inline static Viewport* GameViewport = nullptr;
     inline static float SceneFloorY = 0.0f;
+    inline static BoundingBox FloorBoundingBox;
+    inline static float HalfPlayerHeight = 0.0f;
+    inline static String EnemyPrefabPath; // Use for making copies of enemies
   };
 }
