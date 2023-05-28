@@ -15,12 +15,15 @@ namespace ToolKit
 
     inline static Entity* AddCopyOfEnemyPrefabToScene()
     {
-      Prefab* prefab = new Prefab();
-      prefab->SetPrefabPathVal(EnemyPrefabPath);
-      prefab->Init(g_gameGlobals.m_currentScene.get());
-      prefab->Link();
-      g_gameGlobals.m_currentScene->AddEntity(prefab);
-      return prefab;
+      static Prefab* prefab = nullptr;
+      if (prefab == nullptr)
+      {
+        prefab = new Prefab();
+        prefab->SetPrefabPathVal(EnemyPrefabPath);
+        prefab->Init(g_gameGlobals.m_currentScene.get());
+      }
+
+      return prefab->Copy();
     }
 
     inline static BoundingBox GetFloorBB()
