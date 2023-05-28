@@ -13,7 +13,7 @@ namespace ToolKit
 
     public:
 
-    inline static Entity* AddCopyOfEnemyPrefabToScene()
+    inline static Entity* EnemyPrefabInstantiate()
     {
       static Prefab* prefab = nullptr;
       if (prefab == nullptr)

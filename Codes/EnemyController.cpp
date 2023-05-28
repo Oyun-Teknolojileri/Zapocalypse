@@ -327,7 +327,7 @@ namespace ToolKit
     const float z = (rand() % height) + floorBB.min.z;
     const Vec3 pos = {x, y, z};
 
-    Entity* newEnemyPrefab = GameUtils::AddCopyOfEnemyPrefabToScene();
+    Entity* newEnemyPrefab = GameUtils::EnemyPrefabInstantiate();
     newEnemyPrefab->SetTagVal("enemyPrefab");
     newEnemyPrefab->m_node->SetTranslation(pos);
     AddEnemy(newEnemyPrefab);
