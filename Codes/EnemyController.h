@@ -1,13 +1,16 @@
 #pragma once
 
+#include <Toolkit.h>
+#include <StateMachine.h>
+#include <Entity.h>
+
 #include <unordered_map>
-#include "Toolkit.h"
 
 namespace ToolKit
 {
   class Enemy;
 
-  class EnemyBaseState : public State
+  class  EnemyBaseState : public State
   {
    public:
     EnemyBaseState(Enemy* enemy) : m_enemy(enemy) {};
@@ -25,14 +28,14 @@ namespace ToolKit
   // Movement State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class EnemyMovementSignal
+  class  EnemyMovementSignal
   {
    public:
     static SignalId Move = 1;
     static SignalId Stop = 2;
   };
 
-  class EnemyMovementState
+  class  EnemyMovementState
   {
    public:
     static String Null;
@@ -40,7 +43,7 @@ namespace ToolKit
     static String Walk;
   };
 
-  class EnemyStationaryState : public EnemyBaseState
+  class  EnemyStationaryState : public EnemyBaseState
   {
    public:
     EnemyStationaryState(Enemy* enemy) : EnemyBaseState(enemy) {}
@@ -51,7 +54,7 @@ namespace ToolKit
     String GetType() override { return EnemyMovementState::Stationary; }
   };
 
-  class EnemyWalkState : public EnemyBaseState
+  class  EnemyWalkState : public EnemyBaseState
   {
    public:
     EnemyWalkState(Enemy* enemy) : EnemyBaseState(enemy) {}
@@ -67,14 +70,14 @@ namespace ToolKit
   // Decision State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class EnemyDecisionSignal
+  class  EnemyDecisionSignal
   {
    public:
     static SignalId Patrol = 1;
     static SignalId Attack = 2;
   };
 
-  class EnemyDecisionState
+  class  EnemyDecisionState
   {
    public:
     static String Null;
@@ -82,7 +85,7 @@ namespace ToolKit
     static String Attack;
   };
 
-  class EnemyPatrolState : public EnemyBaseState
+  class  EnemyPatrolState : public EnemyBaseState
   {
    public:
     EnemyPatrolState(Enemy* enemy) : EnemyBaseState(enemy) {}
@@ -96,7 +99,7 @@ namespace ToolKit
     void SetNextTarget();
   };
 
-  class EnemyAttackState : public EnemyBaseState
+  class  EnemyAttackState : public EnemyBaseState
   {
    public:
     EnemyAttackState(Enemy* enemy) : EnemyBaseState(enemy) {}
@@ -109,7 +112,7 @@ namespace ToolKit
 
   //////////////////////////////////////////////////////////////////////////
 
-  class Enemy
+  class  Enemy
   {
     friend class EnemyController;
     friend EnemyBaseState;
@@ -119,7 +122,7 @@ namespace ToolKit
     friend EnemyAttackState;
 
     public:
-    Enemy(Entity* entity, class EnemyController* controller);
+    Enemy(EntityPtr entity, class EnemyController* controller);
     ~Enemy();
 
     void Update(float deltaTime);
@@ -149,7 +152,7 @@ namespace ToolKit
     Enemy() {}
 
     private:
-    Entity* m_enemyPrefab = nullptr;
+    EntityPtr m_enemyPrefab = nullptr;
     float m_health;
 
     EnemyController* m_enemyController = nullptr;
@@ -164,13 +167,13 @@ namespace ToolKit
     unsigned int m_lastPatrolIndex = 0;
   };
 
-  class EnemyController
+  class  EnemyController
   {
     public:
     ~EnemyController();
 
     void Init(const ScenePtr scene);
-    void AddEnemy(Entity* entity);
+    void AddEnemy(EntityPtr entity);
     void Update(float deltaTime);
     void HitEnemy(ULongID id, float damageAmount);
     void KillEnemy(ULongID id);

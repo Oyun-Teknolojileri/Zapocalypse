@@ -1,10 +1,11 @@
 #pragma once
 
-#include "ToolKit.h"
+#include <ToolKit.h>
+#include <Types.h>
 
 namespace ToolKit
 {
-  class InputManager
+  class  InputManager
   {
     public:
 

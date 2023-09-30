@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Types.h"
+#include <Types.h>
 
 namespace ToolKit
 {
   extern class GameGlobals g_gameGlobals;
 
-  class GameGlobals
+  class  GameGlobals
   {
     public:
     // Global managers and controllers

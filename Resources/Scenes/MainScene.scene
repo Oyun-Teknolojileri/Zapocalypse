@@ -1,245 +1,305 @@
-<S version="v0.4.2" name="MainScene">
-	<E t="24" i="1">
-		<N is="0">
-			<T x="0.000000" y="0.000000" z="0.000000"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+<S version="v0.4.5" name="MainScene">
+	<Object Cl="GradientSky">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87726"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="GradientSky"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v=""/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="10" name="DrawSky" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="Illuminate" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="2" name="Intensity" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="100000.000000" hint.increment="0.100000" v="0.400000"/>
-			<P t="5" name="TopColor" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="1" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" x="0.300000" y="0.300000" z="1.000000"/>
-			<P t="5" name="MiddleColor" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="1" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" x="1.000000" y="1.000000" z="0.800000"/>
-			<P t="5" name="BottomColor" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="1" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" x="0.500000" y="0.300000" z="0.100000"/>
-			<P t="2" name="GradientExponent" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="10.000000" hint.increment="0.020000" v="0.300000"/>
-			<P t="2" name="IrradianceResolution" category="Sky" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="32.000000" hint.rangeMax="2048.000000" hint.increment="2.000000" v="64.000000"/>
+			<P t="11" name="Id" v="3245634"/>
+			<P t="9" name="Name" v="GradientSky"/>
+			<P t="9" name="Tag" v=""/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="10" name="DrawSky" v="1"/>
+			<P t="10" name="Illuminate" v="1"/>
+			<P t="2" name="Intensity" v="0.400000"/>
+			<P t="19" name="IBLTextureSize">
+				<List size="5">
+					<CurrVal v="1"/>
+					<0 valType="3" valName="256" v="256"/>
+					<1 valType="3" valName="512" v="512"/>
+					<2 valType="3" valName="1024" v="1024"/>
+					<3 valType="3" valName="2048" v="2048"/>
+					<4 valType="3" valName="4096" v="4096"/>
+				</List>
+			</P>
+			<P t="5" name="TopColor" x="0.300000" y="0.300000" z="1.000000"/>
+			<P t="5" name="MiddleColor" x="1.000000" y="1.000000" z="0.800000"/>
+			<P t="5" name="BottomColor" x="0.500000" y="0.300000" z="0.100000"/>
+			<P t="2" name="GradientExponent" v="0.300000"/>
+			<P t="2" name="IrradianceResolution" v="64.000000"/>
 		</PB>
-		<Components>
-			<Component t="4">
-				<PB>
-					<P t="15" name="Hdri" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000">
-						<ResourceRef Type="10" File="ToolKit\defaultHDRI.hdr"/>
-					</P>
-					<P t="5" name="PositionOffset" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="-340282346638528859811704183484516925440.000000" hint.rangeMax="340282346638528859811704183484516925440.000000" hint.increment="0.500000" x="0.000000" y="0.000000" z="0.000000"/>
-					<P t="5" name="Size" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="100000.000000" hint.increment="0.500000" x="340282346638528859811704183484516925440.000000" y="340282346638528859811704183484516925440.000000" z="340282346638528859811704183484516925440.000000"/>
-					<P t="10" name="Illuminate" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-					<P t="2" name="Intensity" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="100000.000000" hint.increment="0.100000" v="0.400000"/>
-					<P t="2" name="Exposure" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="50.000000" hint.increment="0.050000" v="1.000000"/>
-					<P t="19" name="IBLTextureSize" category="Environment Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000">
-						<List size="6">
-							<CurrVal v="1"/>
-							<0 valType="3" valName="32" v="32"/>
-							<1 valType="3" valName="64" v="64"/>
-							<2 valType="3" valName="128" v="128"/>
-							<3 valType="3" valName="256" v="256"/>
-							<4 valType="3" valName="512" v="512"/>
-							<5 valType="3" valName="1024" v="1024"/>
-						</List>
-					</P>
-				</PB>
-			</Component>
-		</Components>
-	</E>
-	<E t="3" i="2">
-		<N is="0">
-			<T x="0.000000" y="0.000000" z="0.000000"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="50.000000" y="0.300000" z="50.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="0.000000" y="0.000000" z="0.000000"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca>
+				<Object Cl="EnvironmentComponent">
+					<PB>
+						<P t="11" name="Id" v="150647"/>
+						<P t="15" name="Hdri">
+							<ResourceRef Class="Hdri" File="ToolKit\defaultHDRI.hdr"/>
+						</P>
+						<P t="5" name="PositionOffset" x="0.000000" y="0.000000" z="0.000000"/>
+						<P t="5" name="Size" x="340282346638528859811704183484516925440.000000" y="340282346638528859811704183484516925440.000000" z="340282346638528859811704183484516925440.000000"/>
+						<P t="10" name="Illuminate" v="1"/>
+						<P t="2" name="Intensity" v="0.400000"/>
+						<P t="2" name="Exposure" v="1.000000"/>
+						<P t="19" name="IBLTextureSize">
+							<List size="6">
+								<CurrVal v="1"/>
+								<0 valType="3" valName="32" v="32"/>
+								<1 valType="3" valName="64" v="64"/>
+								<2 valType="3" valName="128" v="128"/>
+								<3 valType="3" valName="256" v="256"/>
+								<4 valType="3" valName="512" v="512"/>
+								<5 valType="3" valName="1024" v="1024"/>
+							</List>
+						</P>
+					</PB>
+					<Component>
+						<EnvironmentComponent/>
+					</Component>
+				</Object>
+			</Ca>
+			<SkyBase>
+				<GradientSky/>
+			</SkyBase>
+		</Entity>
+	</Object>
+	<Object Cl="Cube">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87727"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="Floor"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="floor"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="5" name="CubeScale" category="Geometry" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" x="1.000000" y="1.000000" z="1.000000"/>
+			<P t="11" name="Id" v="3245635"/>
+			<P t="9" name="Name" v="Floor"/>
+			<P t="9" name="Tag" v="floor"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="5" name="CubeScale" x="1.000000" y="1.000000" z="1.000000"/>
 		</PB>
-		<Components>
-			<Component t="1">
-				<PB>
-					<P t="12" name="Mesh" category="Mesh Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
-					<P t="10" name="CastShadow" category="Mesh Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-				</PB>
-			</Component>
-			<Component t="3" MaterialCount="1">
-				<PB>
-					<P t="13" name="Material" category="Material Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
-				</PB>
-				<0>
-					<ResourceRef Type="3" File="FloorMaterial.material"/>
-				</0>
-			</Component>
-		</Components>
-	</E>
-	<E t="18" i="3">
-		<N is="0">
-			<T x="0.000000" y="4.420708" z="-5.989320"/>
-			<R x="0.837574" y="-0.517285" z="0.095341" w="-0.147639"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="0.000000" y="0.000000" z="0.000000"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="50.000000" y="0.300000" z="50.000000"/>
+			</N>
+			<Ca>
+				<Object Cl="MeshComponent">
+					<PB>
+						<P t="11" name="Id" v="150912"/>
+						<P t="12" name="Mesh"/>
+						<P t="10" name="CastShadow" v="1"/>
+					</PB>
+					<Component>
+						<MeshComponent/>
+					</Component>
+				</Object>
+				<Object Cl="MaterialComponent">
+					<PB>
+						<P t="11" name="Id" v="150940"/>
+						<P t="13" name="Material"/>
+					</PB>
+					<Component>
+						<MaterialComponent MaterialCount="1">
+							<0>
+								<ResourceRef Class="Material" File="FloorMaterial.material"/>
+							</0>
+						</MaterialComponent>
+					</Component>
+				</Object>
+			</Ca>
+			<Cube/>
+		</Entity>
+	</Object>
+	<Object Cl="DirectionalLight">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87728"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="DirectionalLight"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v=""/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="5" name="Color" category="Light" priority="0" exposed="1" editable="1" hint.isColor="1" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" x="1.000000" y="1.000000" z="1.000000"/>
-			<P t="2" name="Intensity" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="100000.000000" hint.increment="0.100000" v="7.200000"/>
-			<P t="10" name="CastShadow" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="2" name="ShadowRes" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="32.000000" hint.rangeMax="4096.000000" hint.increment="2.000000" v="4096.000000"/>
-			<P t="3" name="PCFSamples" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="128.000000" hint.increment="1.000000" v="128"/>
-			<P t="2" name="PCFRadius" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="5.000000" hint.increment="0.000100" v="0.001000"/>
-			<P t="2" name="ShadowBias" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="20000.000000" hint.increment="0.010000" v="0.100000"/>
-			<P t="2" name="LightBleedingReduction" category="Light" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.000000" hint.rangeMax="1.000000" hint.increment="0.001000" v="0.100000"/>
+			<P t="5" name="Color" x="1.000000" y="1.000000" z="1.000000"/>
+			<P t="2" name="Intensity" v="7.200000"/>
+			<P t="10" name="CastShadow" v="1"/>
+			<P t="2" name="ShadowRes" v="4096.000000"/>
+			<P t="3" name="PCFSamples" v="128"/>
+			<P t="2" name="PCFRadius" v="0.001000"/>
+			<P t="2" name="ShadowBias" v="0.100000"/>
+			<P t="2" name="BleedingReduction" v="0.100000"/>
+			<P t="11" name="Id" v="33540"/>
+			<P t="9" name="Name" v="Entity"/>
+			<P t="9" name="Tag" v=""/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="2" name="LightBleedingReduction" v="0.100000"/>
 		</PB>
-		<Components>
-			<Component t="2">
-				<PB/>
-			</Component>
-			<Component t="3" MaterialCount="2">
-				<PB>
-					<P t="13" name="Material" category="Material Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
-				</PB>
-				<0>
-					<ResourceRef Type="3" File="Resource_1090.material"/>
-				</0>
-				<1>
-					<ResourceRef Type="3" File="Resource_1092.material"/>
-				</1>
-			</Component>
-		</Components>
-	</E>
-	<E t="13" i="4">
-		<N is="0">
-			<T x="4.099241" y="9.216025" z="4.689510"/>
-			<R x="-0.417483" y="0.320547" z="0.160260" w="0.835029"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="0.000000" y="4.420708" z="-5.989320"/>
+				<R x="0.837574" y="-0.517285" z="0.095341" w="-0.147639"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca>
+				<Object Cl="DirectionComponent">
+					<PB>
+						<P t="11" name="Id" v="151197"/>
+					</PB>
+					<Component>
+						<DirectionComponent/>
+					</Component>
+				</Object>
+			</Ca>
+			<Light>
+				<DirectionalLight/>
+			</Light>
+		</Entity>
+	</Object>
+	<Object Cl="Camera">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87729"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="MainCam"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="mainCam"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="2" name="Fov" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="10.000000" hint.rangeMax="175.000000" hint.increment="5.000000" v="90.000000"/>
-			<P t="2" name="NearClip" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.100000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0.010000"/>
-			<P t="2" name="FarClip" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="100.099998" hint.rangeMax="5000.000000" hint.increment="10.000000" v="1000.000000"/>
-			<P t="10" name="Orthographic" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="2" name="OrthographicScale" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="1" hint.rangeMin="0.001000" hint.rangeMax="100.000000" hint.increment="0.001000" v="0.001000"/>
-			<P t="18" name="Poses" category="Camera" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
+			<P t="11" name="Id" v="3245637"/>
+			<P t="9" name="Name" v="MainCam"/>
+			<P t="9" name="Tag" v="mainCam"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="2" name="Fov" v="90.000000"/>
+			<P t="2" name="NearClip" v="0.010000"/>
+			<P t="2" name="FarClip" v="1000.000000"/>
+			<P t="10" name="Orthographic" v="0"/>
+			<P t="2" name="OrthographicScale" v="0.001000"/>
+			<P t="18" name="Poses"/>
 		</PB>
-		<Components>
-			<Component t="2">
-				<PB/>
-			</Component>
-			<Component t="1">
-				<PB>
-					<P t="12" name="Mesh" category="Mesh Component" priority="90" exposed="0" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000"/>
-					<P t="10" name="CastShadow" category="Mesh Component" priority="90" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-				</PB>
-			</Component>
-		</Components>
-		<Camera fov="1.570796" aspect="1.468112" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
-	</E>
-	<E t="22" i="5">
-		<N is="0">
-			<T x="-4.757576" y="0.750000" z="1.574187"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="4.099241" y="9.216025" z="4.689510"/>
+				<R x="-0.417483" y="0.320547" z="0.160260" w="0.835029"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca>
+				<Object Cl="DirectionComponent">
+					<PB>
+						<P t="11" name="Id" v="151458"/>
+					</PB>
+					<Component>
+						<DirectionComponent/>
+					</Component>
+				</Object>
+				<Object Cl="MeshComponent">
+					<PB>
+						<P t="11" name="Id" v="151461"/>
+						<P t="12" name="Mesh"/>
+						<P t="10" name="CastShadow" v="0"/>
+					</PB>
+					<Component>
+						<MeshComponent/>
+					</Component>
+				</Object>
+			</Ca>
+			<Camera fov="1.570796" aspect="1.468112" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
+		</Entity>
+	</Object>
+	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87730"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PlayerPrefab"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="playerPrefab"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="9" name="PrefabPath" category="Prefab" priority="90" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PlayerPrefab.scene"/>
+			<P t="11" name="Id" v="3245638"/>
+			<P t="9" name="Name" v="PlayerPrefab"/>
+			<P t="9" name="Tag" v="playerPrefab"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="9" name="PrefabPath" v="PlayerPrefab.scene"/>
 		</PB>
-		<Components/>
-		<PrefabRoots>
-			<Player/>
-			<Cone/>
-			<ProjectileStartPos/>
-		</PrefabRoots>
-	</E>
-	<E t="15" i="6">
-		<N is="0">
-			<T x="1.681326" y="0.750000" z="-7.185130"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="-4.757576" y="0.750000" z="1.574187"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca/>
+			<Prefab>
+				<PrefabRoots>
+					<Player/>
+					<Cone/>
+					<ProjectileStartPos/>
+				</PrefabRoots>
+			</Prefab>
+		</Entity>
+	</Object>
+	<Object Cl="EntityNode">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87731"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PatrolPoint1"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="pp"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
+			<P t="11" name="Id" v="3245639"/>
+			<P t="9" name="Name" v="PatrolPoint1"/>
+			<P t="9" name="Tag" v="pp"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
 		</PB>
-		<Components/>
-	</E>
-	<E t="15" i="7">
-		<N is="0">
-			<T x="-11.421209" y="0.750000" z="-7.185130"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="1.681326" y="0.750000" z="-7.185130"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca/>
+			<EntityNode/>
+		</Entity>
+	</Object>
+	<Object Cl="EntityNode">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87732"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="PatrolPoint2"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="pp"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
+			<P t="11" name="Id" v="3245640"/>
+			<P t="9" name="Name" v="PatrolPoint2"/>
+			<P t="9" name="Tag" v="pp"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
 		</PB>
-		<Components/>
-	</E>
-	<E t="22" i="8">
-		<N is="0">
-			<T x="-6.794895" y="0.750000" z="-3.374838"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="-11.421209" y="0.750000" z="-7.185130"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca/>
+			<EntityNode/>
+		</Entity>
+	</Object>
+	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="87733"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab1"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="enemyPrefab"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="9" name="PrefabPath" category="Prefab" priority="90" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab.scene"/>
+			<P t="11" name="Id" v="3245641"/>
+			<P t="9" name="Name" v="EnemyPrefab1"/>
+			<P t="9" name="Tag" v="enemyPrefab"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="9" name="PrefabPath" v="EnemyPrefab.scene"/>
 		</PB>
-		<Components/>
-		<PrefabRoots>
-			<Enemy/>
-			<Cone/>
-			<ProjectileStartPos/>
-		</PrefabRoots>
-	</E>
-	<E t="22" i="18">
-		<N is="0">
-			<T x="-0.931689" y="0.750000" z="-4.452109"/>
-			<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-			<S x="1.000000" y="1.000000" z="1.000000"/>
-		</N>
+		<Entity>
+			<N is="0">
+				<T x="-6.794895" y="0.750000" z="-3.374838"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca/>
+			<Prefab>
+				<PrefabRoots>
+					<Enemy/>
+					<Cone/>
+					<ProjectileStartPos/>
+				</PrefabRoots>
+			</Prefab>
+		</Entity>
+	</Object>
+	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" category="Meta" priority="100" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="164203"/>
-			<P t="9" name="Name" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab2"/>
-			<P t="9" name="Tag" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="enemyPrefab"/>
-			<P t="10" name="Visible" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="1"/>
-			<P t="10" name="TransformLock" category="Meta" priority="100" exposed="1" editable="1" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="0"/>
-			<P t="9" name="PrefabPath" category="Prefab" priority="90" exposed="1" editable="0" hint.isColor="0" hint.isRanLim="0" hint.rangeMin="0.000000" hint.rangeMax="100.000000" hint.increment="0.100000" v="EnemyPrefab.scene"/>
+			<P t="11" name="Id" v="3245651"/>
+			<P t="9" name="Name" v="EnemyPrefab2"/>
+			<P t="9" name="Tag" v="enemyPrefab"/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="9" name="PrefabPath" v="EnemyPrefab.scene"/>
 		</PB>
-		<Components/>
-		<PrefabRoots>
-			<Enemy/>
-			<Cone/>
-			<ProjectileStartPos/>
-		</PrefabRoots>
-	</E>
+		<Entity>
+			<N is="0">
+				<T x="-0.931689" y="0.750000" z="-4.452109"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="1.000000" y="1.000000" z="1.000000"/>
+			</N>
+			<Ca/>
+			<Prefab>
+				<PrefabRoots>
+					<Enemy/>
+					<Cone/>
+					<ProjectileStartPos/>
+				</PrefabRoots>
+			</Prefab>
+		</Entity>
+	</Object>
 </S>
 <PostProcessing TonemappingEnabled="1" TonemapperMode="1" EnableBloom="1" BloomIntensity="1.000000" BloomThreshold="1.000000" BloomIterationCount="5" GammaCorrectionEnabled="1" Gamma="2.200000" SSAOEnabled="1" SSAORadius="0.500000" SSAOBias="0.025000" DepthOfFieldEnabled="0" FocusPoint="10.000000" FocusScale="5.000000" DofQuality="1" FXAAEnabled="0"/>
 
