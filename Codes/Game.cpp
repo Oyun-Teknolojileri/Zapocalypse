@@ -82,7 +82,7 @@ namespace ToolKit
     SafeDel(g_gameGlobals.m_projectileManager);
     SafeDel(g_gameGlobals.m_enemyController);
 
-    g_gameGlobals.m_currentScene->ClearEntities();
+    g_gameGlobals.m_currentScene->Destroy(false);
 
     delete this;
   }
