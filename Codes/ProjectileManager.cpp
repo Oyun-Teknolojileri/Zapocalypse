@@ -25,7 +25,7 @@ namespace ToolKit
     mat->m_emissiveColor = Vec3(1.0f, 1.0f, 0.3f);
     entity->GetComponent<MeshComponent>()->GetMeshVal()->SetMaterial(mat);
     
-    lifeTime = 5000.0f;
+    lifeTime = 1000.0f;
     duration = 0.0f;
   }
 
@@ -114,29 +114,29 @@ namespace ToolKit
         "pr"
       };
 
-      // Tag anything that will be ignored.
-      // You can concatenate tags from the editor with "."
-      // EX: tag = "first.second.ignore"
-      // when you query an object with tag "first", "second" or "ignore" , it will ignore the entity with the above tag.
-      EntityPtrArray projectileIgnored;
-      for (const String& tag : ignoredTags)
-      {
-        EntityPtrArray concatList = m_scene->GetByTag(tag);
-        projectileIgnored.insert(projectileIgnored.end(), concatList.begin(), concatList.end());
-      }
-      
-      EntityIdArray ignoredHandles;
-      ToEntityIdArray(ignoredHandles, projectileIgnored);
-
-      ignoredHandles.insert(ignoredHandles.end(), m_projectileHitIgnoreList.begin(), m_projectileHitIgnoreList.end());
-
-      // Collision check with the environment in the scene
       for (EntityPtr object : m_scene->GetEntities())
       {
         // Ignored entities
-        if (object->GetMeshComponent() == nullptr || IsInArrayFn(ignoredHandles, object)) 
+        if (object->GetMeshComponent() == nullptr) 
         {
           continue;
+        }
+        else
+        {
+          bool skip = false;
+          for (size_t i = 0; i < ignoredTags.size(); i++)
+          {
+            if (object->GetTagVal() == ignoredTags[i])
+            {
+              skip = true;
+              break;
+            }
+          }
+
+          if (skip)
+          {
+            continue;
+          }
         }
 
         if (BoxBoxIntersection(object->GetAABB(true), projectileBB))
