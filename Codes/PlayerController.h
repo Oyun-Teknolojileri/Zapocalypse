@@ -130,7 +130,7 @@ namespace ToolKit
         {
           for (Node* node : m_playerPrefab->m_node->m_children[0]->m_children)
           {
-            if (node->m_entity->GetTagVal() == "playerMuzzlePos")
+            if (node->OwnerEntity()->GetTagVal() == "playerMuzzlePos")
             {
               projectileStartPosNode = node;
               break;

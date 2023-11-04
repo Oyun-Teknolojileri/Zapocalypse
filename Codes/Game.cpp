@@ -19,10 +19,10 @@ namespace ToolKit
     GetSceneManager()->SetCurrentScene(g_gameGlobals.m_currentScene);
 
     // ProjectileManager
-    g_gameGlobals.m_projectileManager = new ProjectileManager(g_gameGlobals.m_currentScene);
+    g_gameGlobals.m_projectileManager = MakeNewPtr<ProjectileManager>(g_gameGlobals.m_currentScene);
 
     // Input manager
-    g_gameGlobals.m_inputManager = new InputManager();
+    g_gameGlobals.m_inputManager = MakeNewPtr<InputManager>();
 
     // Floor entity
     m_floor = g_gameGlobals.m_currentScene->GetFirstByTag("floor");
@@ -36,17 +36,17 @@ namespace ToolKit
     m_playerPrefab->AddComponent<DirectionComponent>(); // Add direction component
     // Snap player to floor
     Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
-    float halfHeight = m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
+    float halfHeight = m_playerPrefab->m_node->m_children[0]->OwnerEntity()->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
     m_playerPrefab->m_node->SetTranslation(Vec3(playerPos.x, m_floor->m_node->GetTranslation().y + halfHeight, playerPos.z));
 
     // Note: If the player size is changable, update this variable every frame
-    GameUtils::HalfPlayerHeight = m_playerPrefab->m_node->m_children[0]->m_entity->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
+    GameUtils::HalfPlayerHeight = m_playerPrefab->m_node->m_children[0]->OwnerEntity()->GetMeshComponent()->GetAABB().GetHeight() / 2.0f;
 
     // Projectile start pos
     Vec3 projectileStartPos = ZERO;
     for (Node* child : m_playerPrefab->m_node->m_children[0]->m_children)
     {
-      if (child->m_entity->GetTagVal() == "projectileStartPos")
+      if (child->OwnerEntity()->GetTagVal() == "projectileStartPos")
       {
         projectileStartPos = child->GetTranslation();
         break;
@@ -55,7 +55,7 @@ namespace ToolKit
 
     // Enemy controller
     GameUtils::EnemyPrefabPath = "EnemyPrefab.scene";
-    g_gameGlobals.m_enemyController = new EnemyController();
+    g_gameGlobals.m_enemyController = MakeNewPtr<EnemyController>();
     for (EntityPtr enemyPrefabEntity : g_gameGlobals.m_currentScene->GetByTag("enemyPrefab"))
     {
       g_gameGlobals.m_enemyController->AddEnemy(enemyPrefabEntity);
@@ -63,7 +63,7 @@ namespace ToolKit
     g_gameGlobals.m_enemyController->Init(g_gameGlobals.m_currentScene);
 
     // Player controller
-    g_gameGlobals.m_playerController = MakeNew<PlayerController>(m_playerPrefab);
+    g_gameGlobals.m_playerController = MakeNewPtr<PlayerController>(m_playerPrefab);
     g_gameGlobals.m_playerController->m_scene = g_gameGlobals.m_currentScene;
     g_gameGlobals.m_playerController->Init();
 
@@ -77,10 +77,10 @@ namespace ToolKit
     // Remove direction component from player
     g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->GetIdVal());
 
-    SafeDel(g_gameGlobals.m_playerController);
-    SafeDel(g_gameGlobals.m_inputManager);
-    SafeDel(g_gameGlobals.m_projectileManager);
-    SafeDel(g_gameGlobals.m_enemyController);
+    g_gameGlobals.m_playerController = nullptr;
+    g_gameGlobals.m_inputManager = nullptr;
+    g_gameGlobals.m_projectileManager = nullptr;
+    g_gameGlobals.m_enemyController = nullptr;
 
     g_gameGlobals.m_currentScene->Destroy(false);
 

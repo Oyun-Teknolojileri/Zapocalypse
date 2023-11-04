@@ -132,7 +132,7 @@ namespace ToolKit
           if (hit->GetTagVal() == "enemy")
           {
             constexpr float damage = 150.0f;
-            g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), damage);
+            g_gameGlobals.m_enemyController->HitEnemy(hit->Parent()->GetIdVal(), damage);
             GetLogger()->WriteConsole(LogType::Command, "Enemy Hit");
           }
         }

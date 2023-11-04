@@ -7,7 +7,7 @@
 
 #include <ToolKit.h>
 #include <Plugin.h>
-#include <SceneRenderer.h>
+#include <SceneRenderPath.h>   
 
 namespace ToolKit
 {

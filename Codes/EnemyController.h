@@ -138,7 +138,7 @@ namespace ToolKit
       {
         for (Node* childNode : m_enemyPrefab->m_node->m_children[0]->m_children)
         {
-          if (childNode->m_entity->GetTagVal() == "enemyMuzzlePos")
+          if (childNode->OwnerEntity()->GetTagVal() == "enemyMuzzlePos")
           {
             muzzlePos = childNode->GetTranslation();
             break;
