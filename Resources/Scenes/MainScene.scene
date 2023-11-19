@@ -1,7 +1,7 @@
 <S version="v0.4.5" name="MainScene">
 	<Object Cl="GradientSky">
 		<PB>
-			<P t="11" name="Id" v="733373849"/>
+			<P t="11" name="Id" v="12717085370917462331"/>
 			<P t="9" name="Name" v="GradientSky"/>
 			<P t="9" name="Tag" v=""/>
 			<P t="10" name="Visible" v="1"/>
@@ -34,7 +34,7 @@
 			<Ca>
 				<Object Cl="EnvironmentComponent">
 					<PB>
-						<P t="11" name="Id" v="150647"/>
+						<P t="11" name="Id" v="10590746221408888785"/>
 						<P t="15" name="Hdri">
 							<ResourceRef Class="Hdri" File="ToolKit\defaultHDRI.hdr"/>
 						</P>
@@ -67,7 +67,7 @@
 	</Object>
 	<Object Cl="Cube">
 		<PB>
-			<P t="11" name="Id" v="733373850"/>
+			<P t="11" name="Id" v="15881336609247595575"/>
 			<P t="9" name="Name" v="Floor"/>
 			<P t="9" name="Tag" v="floor"/>
 			<P t="10" name="Visible" v="1"/>
@@ -83,7 +83,7 @@
 			<Ca>
 				<Object Cl="MeshComponent">
 					<PB>
-						<P t="11" name="Id" v="150912"/>
+						<P t="11" name="Id" v="6333028769622868645"/>
 						<P t="12" name="Mesh"/>
 						<P t="10" name="CastShadow" v="1"/>
 					</PB>
@@ -93,7 +93,7 @@
 				</Object>
 				<Object Cl="MaterialComponent">
 					<PB>
-						<P t="11" name="Id" v="150940"/>
+						<P t="11" name="Id" v="11647962432747026277"/>
 						<P t="13" name="Material"/>
 					</PB>
 					<Component>
@@ -110,31 +110,30 @@
 	</Object>
 	<Object Cl="DirectionalLight">
 		<PB>
-			<P t="11" name="Id" v="363202"/>
-			<P t="9" name="Name" v="Entity"/>
+			<P t="11" name="Id" v="8151317612430796355"/>
+			<P t="9" name="Name" v="DirectionalLight"/>
 			<P t="9" name="Tag" v=""/>
 			<P t="10" name="Visible" v="1"/>
 			<P t="10" name="TransformLock" v="0"/>
 			<P t="5" name="Color" x="1.000000" y="1.000000" z="1.000000"/>
-			<P t="2" name="Intensity" v="0.800000"/>
+			<P t="2" name="Intensity" v="0.500000"/>
 			<P t="10" name="CastShadow" v="1"/>
 			<P t="2" name="ShadowRes" v="2048.000000"/>
 			<P t="3" name="PCFSamples" v="128"/>
-			<P t="2" name="PCFRadius" v="0.003000"/>
-			<P t="2" name="ShadowBias" v="0.280000"/>
-			<P t="2" name="BleedingReduction" v="0.375000"/>
-			<P t="2" name="LightBleedingReduction" v="0.100000"/>
+			<P t="2" name="PCFRadius" v="0.001000"/>
+			<P t="2" name="ShadowBias" v="0.100000"/>
+			<P t="2" name="BleedingReduction" v="0.100000"/>
 		</PB>
 		<Entity>
 			<N is="0">
 				<T x="0.000000" y="4.420708" z="-5.989320"/>
-				<R x="0.902312" y="-0.210959" z="0.172684" w="-0.333930"/>
-				<S x="1.000000" y="1.000000" z="1.000000"/>
+				<R x="0.772090" y="-0.139879" z="0.171621" w="-0.595699"/>
+				<S x="1.000001" y="1.000002" z="1.000002"/>
 			</N>
 			<Ca>
 				<Object Cl="DirectionComponent">
 					<PB>
-						<P t="11" name="Id" v="151197"/>
+						<P t="11" name="Id" v="12421816331016527853"/>
 					</PB>
 					<Component>
 						<DirectionComponent/>
@@ -148,7 +147,7 @@
 	</Object>
 	<Object Cl="Camera">
 		<PB>
-			<P t="11" name="Id" v="733373852"/>
+			<P t="11" name="Id" v="17327137566831519958"/>
 			<P t="9" name="Name" v="MainCam"/>
 			<P t="9" name="Tag" v="mainCam"/>
 			<P t="10" name="Visible" v="1"/>
@@ -162,14 +161,14 @@
 		</PB>
 		<Entity>
 			<N is="0">
-				<T x="1.554610" y="9.660700" z="6.290447"/>
-				<R x="-0.303040" y="0.323757" z="0.110300" w="0.889484"/>
+				<T x="4.099241" y="9.216025" z="4.689510"/>
+				<R x="-0.417483" y="0.320547" z="0.160260" w="0.835029"/>
 				<S x="1.000000" y="1.000000" z="1.000000"/>
 			</N>
 			<Ca>
 				<Object Cl="DirectionComponent">
 					<PB>
-						<P t="11" name="Id" v="151458"/>
+						<P t="11" name="Id" v="115479202006715621"/>
 					</PB>
 					<Component>
 						<DirectionComponent/>
@@ -177,7 +176,7 @@
 				</Object>
 				<Object Cl="MeshComponent">
 					<PB>
-						<P t="11" name="Id" v="151461"/>
+						<P t="11" name="Id" v="15932127040966388416"/>
 						<P t="12" name="Mesh"/>
 						<P t="10" name="CastShadow" v="0"/>
 					</PB>
@@ -186,12 +185,12 @@
 					</Component>
 				</Object>
 			</Ca>
-			<Camera fov="1.570796" aspect="1.688399" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
+			<Camera fov="1.570796" aspect="1.468112" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
 		</Entity>
 	</Object>
 	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" v="733373853"/>
+			<P t="11" name="Id" v="15816116926129446295"/>
 			<P t="9" name="Name" v="PlayerPrefab"/>
 			<P t="9" name="Tag" v="playerPrefab"/>
 			<P t="10" name="Visible" v="1"/>
@@ -216,7 +215,7 @@
 	</Object>
 	<Object Cl="EntityNode">
 		<PB>
-			<P t="11" name="Id" v="733373854"/>
+			<P t="11" name="Id" v="3760704685464145621"/>
 			<P t="9" name="Name" v="PatrolPoint1"/>
 			<P t="9" name="Tag" v="pp"/>
 			<P t="10" name="Visible" v="1"/>
@@ -234,7 +233,7 @@
 	</Object>
 	<Object Cl="EntityNode">
 		<PB>
-			<P t="11" name="Id" v="733373855"/>
+			<P t="11" name="Id" v="12059866536272884257"/>
 			<P t="9" name="Name" v="PatrolPoint2"/>
 			<P t="9" name="Tag" v="pp"/>
 			<P t="10" name="Visible" v="1"/>
@@ -252,7 +251,7 @@
 	</Object>
 	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" v="733373856"/>
+			<P t="11" name="Id" v="12569621320722477729"/>
 			<P t="9" name="Name" v="EnemyPrefab1"/>
 			<P t="9" name="Tag" v="enemyPrefab"/>
 			<P t="10" name="Visible" v="1"/>
@@ -277,7 +276,7 @@
 	</Object>
 	<Object Cl="Prefab">
 		<PB>
-			<P t="11" name="Id" v="733373866"/>
+			<P t="11" name="Id" v="9182338222631543701"/>
 			<P t="9" name="Name" v="EnemyPrefab2"/>
 			<P t="9" name="Tag" v="enemyPrefab"/>
 			<P t="10" name="Visible" v="1"/>
