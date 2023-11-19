@@ -1,15 +1,17 @@
 #pragma once
-#include "ToolKit.h"
-#include "StateMachine.h"
-#include "MathUtil.h"
+
 #include "GameUtils.h"
 #include "GameGlobals.h"
-#include "DirectionComponent.h"
 #include "InputManager.h"
+
+#include <ToolKit.h>
+#include <StateMachine.h>
+#include <MathUtil.h>
+#include <DirectionComponent.h>
 
 namespace ToolKit
 {
-  class PlayerBaseState : public State
+  class  PlayerBaseState : public State
   {
    public:
     PlayerBaseState() {}
@@ -21,14 +23,14 @@ namespace ToolKit
   // Movement State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class PlayerMovementSignal
+  class  PlayerMovementSignal
   {
    public:
     static SignalId Move = 1;
     static SignalId Stop = 2;
   };
 
-  class PlayerMovementState
+  class  PlayerMovementState
   {
    public:
     static String Null;
@@ -36,7 +38,7 @@ namespace ToolKit
     static String Walk;
   };
 
-  class PlayerStationaryState : public PlayerBaseState
+  class  PlayerStationaryState : public PlayerBaseState
   {
    public:
     PlayerStationaryState() {}
@@ -47,7 +49,7 @@ namespace ToolKit
     String GetType() override { return PlayerMovementState::Stationary; }
   };
 
-  class PlayerWalkState : public PlayerBaseState
+  class  PlayerWalkState : public PlayerBaseState
   {
    public:
     PlayerWalkState() {}
@@ -61,7 +63,7 @@ namespace ToolKit
   // Combat State Machine
   //////////////////////////////////////////////////////////////////////////
 
-  class PlayerCombatSignal
+  class  PlayerCombatSignal
   {
    public:
     static SignalId Hold = 1;
@@ -69,7 +71,7 @@ namespace ToolKit
     // TODO static SignalId Reload = 3;
   };
 
-  class PlayerCombatState
+  class  PlayerCombatState
   {
    public:
     static String Null;
@@ -78,7 +80,7 @@ namespace ToolKit
     // TODO static String Reload;
   };
 
-  class PlayerHoldState : public PlayerBaseState
+  class  PlayerHoldState : public PlayerBaseState
   {
    public:
     PlayerHoldState() {}
@@ -89,7 +91,7 @@ namespace ToolKit
     String GetType() override { return PlayerCombatState::Hold; }
   };
 
-  class PlayerShootState : public PlayerBaseState
+  class  PlayerShootState : public PlayerBaseState
   {
    public:
     PlayerShootState() {}
@@ -102,10 +104,10 @@ namespace ToolKit
 
   //////////////////////////////////////////////////////////////////////////
 
-  class PlayerController
+  class  PlayerController
   {
      public:
-      PlayerController(Entity* playerPrefab) : m_playerPrefab(playerPrefab) {}
+      PlayerController(EntityPtr playerPrefab) : m_playerPrefab(playerPrefab) {}
       ~PlayerController() {}
 
       void Init();
@@ -128,7 +130,7 @@ namespace ToolKit
         {
           for (Node* node : m_playerPrefab->m_node->m_children[0]->m_children)
           {
-            if (node->m_entity->GetTagVal() == "playerMuzzlePos")
+            if (node->OwnerEntity()->GetTagVal() == "playerMuzzlePos")
             {
               projectileStartPosNode = node;
               break;
@@ -153,7 +155,7 @@ namespace ToolKit
       StateMachine m_PlayerMovementStateMachine;
       StateMachine m_PlayerCombatStateMachine;
 
-      Entity* m_playerPrefab = nullptr;
+      EntityPtr m_playerPrefab = nullptr;
 
       bool m_pointOnPlaneValid = false;
       Vec3 m_pointOnPlane = ZERO;

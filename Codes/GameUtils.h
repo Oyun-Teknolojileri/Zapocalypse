@@ -1,29 +1,32 @@
 #pragma once
-#include "ToolKit.h"
-#include "MathUtil.h"
-#include "Prefab.h"
+
 #include "GameGlobals.h"
+
+#include <ToolKit.h>
+#include <MathUtil.h>
+#include <Prefab.h>
+#include <Viewport.h>
 
 namespace ToolKit
 {
   // Utility class for game, does not know anything about the game, just for helpers
-  class GameUtils
+  class  GameUtils
   {
     friend class Game;
 
     public:
 
-    inline static Entity* EnemyPrefabInstantiate()
+    inline static EntityPtr EnemyPrefabInstantiate()
     {
-      static Prefab* prefab = nullptr;
+      static PrefabPtr prefab = nullptr;
       if (prefab == nullptr)
       {
-        prefab = new Prefab();
+        prefab = MakeNewPtr<Prefab>();
         prefab->SetPrefabPathVal(EnemyPrefabPath);
         prefab->Init(g_gameGlobals.m_currentScene.get());
       }
 
-      return prefab->Copy();
+      return Cast<Entity>(prefab->Copy());
     }
 
     inline static BoundingBox GetFloorBB()

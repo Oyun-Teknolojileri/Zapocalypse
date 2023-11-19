@@ -123,16 +123,20 @@ namespace ToolKit
     {
       pastTime -= g_gameGlobals.m_playerProjectileCooldown;
       const Vec3 projectileStartPos = g_gameGlobals.m_playerController->GetProjectileStartPos();
-      g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
-      g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
-      {
-        if (hit->GetTagVal() == "enemy")
+      g_gameGlobals.m_projectileManager->ShootProjectile
+      (
+        projectileStartPos,
+        glm::normalize(g_gameGlobals.m_playerController->m_pointOnPlane - projectileStartPos),
+        g_gameGlobals.m_projectileSpeed, [](EntityPtr projectile, EntityPtr hit)
         {
-          constexpr float damage = 150.0f;
-          g_gameGlobals.m_enemyController->HitEnemy(hit->m_node->m_parent->m_entity->GetIdVal(), damage);
-          GetLogger()->WriteConsole(LogType::Command, "Enemy Hit");
+          if (hit->GetTagVal() == "enemy")
+          {
+            constexpr float damage = 150.0f;
+            g_gameGlobals.m_enemyController->HitEnemy(hit->Parent()->GetIdVal(), damage);
+            GetLogger()->WriteConsole(LogType::Command, "Enemy Hit");
+          }
         }
-      });
+      );
     }
 
     return NullSignal;

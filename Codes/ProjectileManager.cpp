@@ -1,12 +1,21 @@
 #include "ProjectileManager.h"
-#include "MeshComponent.h"
+
+#include <Primative.h>
+#include <MeshComponent.h>
+#include <Material.h>
+#include <Mesh.h>
+#include <Scene.h>
+#include <MathUtil.h>
 
 namespace ToolKit
 {
   Projectile::Projectile()
   {
     // Projectiles have a default mesh and material
-    entity = new Cube(Vec3(0.1f));
+    CubePtr cube = MakeNewPtr<Cube>();
+    cube->SetCubeScaleVal(Vec3(0.1f));
+    entity = cube;
+    
     static unsigned nameIndex = 0;
     nameIndex++;
     entity->SetNameVal("Projectile " + std::to_string(nameIndex));
@@ -16,14 +25,14 @@ namespace ToolKit
     mat->m_emissiveColor = Vec3(1.0f, 1.0f, 0.3f);
     entity->GetComponent<MeshComponent>()->GetMeshVal()->SetMaterial(mat);
     
-    lifeTime = 5000.0f;
+    lifeTime = 1000.0f;
     duration = 0.0f;
   }
 
   Projectile::~Projectile()
   {
     entity->ClearComponents();
-    delete entity;
+    entity = nullptr;
   }
 
   ProjectileManager::ProjectileManager(ScenePtr scene)
@@ -40,7 +49,7 @@ namespace ToolKit
     }
   }
 
-  bool ProjectileManager::ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* projectile, Entity* hit)> callback)
+  bool ProjectileManager::ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, Projectile::HitCheckFn callback)
   {
     if (m_availableProjectileIndex == -1) // Check if the pool is full
     {
@@ -66,7 +75,7 @@ namespace ToolKit
 
   void ProjectileManager::UpdateProjectiles(float deltaTime)
   {
-    auto IsInArrayFn = [](const EntityIdArray& list, Entity* obj)
+    auto IsInArrayFn = [](const EntityIdArray& list, EntityPtr obj)
     {
       for (ULongID id : list)
         if (id == obj->GetIdVal())
@@ -105,29 +114,29 @@ namespace ToolKit
         "pr"
       };
 
-      // Tag anything that will be ignored.
-      // You can concatenate tags from the editor with "."
-      // EX: tag = "first.second.ignore"
-      // when you query an object with tag "first", "second" or "ignore" , it will ignore the entity with the above tag.
-      EntityRawPtrArray projectileIgnored;
-      for (const String& tag : ignoredTags)
-      {
-        EntityRawPtrArray concatList = m_scene->GetByTag(tag);
-        projectileIgnored.insert(projectileIgnored.end(), concatList.begin(), concatList.end());
-      }
-      
-      EntityIdArray ignoredHandles;
-      ToEntityIdArray(ignoredHandles, projectileIgnored);
-
-      ignoredHandles.insert(ignoredHandles.end(), m_projectileHitIgnoreList.begin(), m_projectileHitIgnoreList.end());
-
-      // Collision check with the environment in the scene
-      for (Entity* object : m_scene->GetEntities())
+      for (EntityPtr object : m_scene->GetEntities())
       {
         // Ignored entities
-        if (object->GetMeshComponent() == nullptr || IsInArrayFn(ignoredHandles, object)) 
+        if (object->GetMeshComponent() == nullptr) 
         {
           continue;
+        }
+        else
+        {
+          bool skip = false;
+          for (size_t i = 0; i < ignoredTags.size(); i++)
+          {
+            if (object->GetTagVal() == ignoredTags[i])
+            {
+              skip = true;
+              break;
+            }
+          }
+
+          if (skip)
+          {
+            continue;
+          }
         }
 
         if (BoxBoxIntersection(object->GetAABB(true), projectileBB))

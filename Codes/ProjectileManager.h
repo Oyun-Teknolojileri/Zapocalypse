@@ -1,22 +1,25 @@
 #pragma once
-#include "ToolKit.h"
+
+#include <ToolKit.h>
 
 namespace ToolKit
 {
-  class Projectile
+  class  Projectile
   {
     // Prevent creating projectile that is not tracked by the manager
     friend class ProjectileManager;
 
+    public:
+    typedef std::function<void(EntityPtr projectile, EntityPtr hit)> HitCheckFn;
     private:
     Projectile();
     ~Projectile();
 
     private:
-    Entity* entity;
+    EntityPtr entity;
     Vec3 direction; // Should be a unit vector
     float speed;
-    std::function<void(Entity* projectile, Entity* hit)> callback;
+    std::function<void(EntityPtr projectile, EntityPtr hit)> callback;
     short nextAvailableProjectileIndex;
     bool active;
     float lifeTime; // In milliseconds
@@ -32,7 +35,7 @@ namespace ToolKit
     // Returns true if the projectile can be shot
     // Note: Direction should be a unit vector
     // Note: Entity must have a mesh component (so the collision check can be done)
-    bool ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, std::function<void(Entity* projectile, Entity* hit)> callback);
+    bool ShootProjectile(const Vec3& pos, const Vec3& dir, float speed, Projectile::HitCheckFn callback);
     void UpdateProjectiles(float deltaTime);
     void Reset(ScenePtr newScene);
     void AddToProjectileIgnoreList(ULongID id);

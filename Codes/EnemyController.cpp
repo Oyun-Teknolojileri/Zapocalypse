@@ -1,9 +1,12 @@
 #include "EnemyController.h"
-#include <memory>
-#include <cstdlib>
 #include "GameGlobals.h"
 #include "PlayerController.h"
 #include "ProjectileManager.h"
+
+#include <Scene.h>
+
+#include <memory>
+#include <cstdlib>
 
 namespace ToolKit
 {
@@ -148,14 +151,18 @@ namespace ToolKit
     {
       pastTime -= g_gameGlobals.m_enemyProjectileCooldown;
       const Vec3 projectileStartPos = m_enemy->GetProjectileStartPos();
-      g_gameGlobals.m_projectileManager->ShootProjectile(projectileStartPos, glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - projectileStartPos),
-      g_gameGlobals.m_projectileSpeed, [](Entity* projectile, Entity* hit)
-      {
-        if (hit->GetTagVal() == "player")
+      g_gameGlobals.m_projectileManager->ShootProjectile
+      (
+        projectileStartPos,
+        glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - projectileStartPos),
+        g_gameGlobals.m_projectileSpeed, [](EntityPtr projectile, EntityPtr hit)
         {
-          GetLogger()->WriteConsole(LogType::Command, "Player Hit");
+          if (hit->GetTagVal() == "player")
+          {
+            GetLogger()->WriteConsole(LogType::Command, "Player Hit");
+          }
         }
-      });
+      );
     }
 
     return NullSignal;
@@ -173,7 +180,7 @@ namespace ToolKit
 
   //////////////////////////////////////////////////////////////////////////
 
-  Enemy::Enemy(Entity* prefab, EnemyController* controller)
+  Enemy::Enemy(EntityPtr prefab, EnemyController* controller)
   {
     m_enemyPrefab = prefab;
     m_health = 100.0f;
@@ -183,13 +190,13 @@ namespace ToolKit
     m_destionationReached = false;
 
     // add direction component to enemy prefab
-    m_enemyPrefab->AddComponent(std::make_shared<DirectionComponent>());
+    m_enemyPrefab->AddComponent<DirectionComponent>();
   }
 
   Enemy::~Enemy()
   {
     g_gameGlobals.m_currentScene->RemoveEntity(m_enemyPrefab->GetIdVal());
-    delete m_enemyPrefab;
+    m_enemyPrefab = nullptr;
   }
 
   void Enemy::Update(float deltaTime)
@@ -237,7 +244,7 @@ namespace ToolKit
   {
     // Accumulate patrol points in the scene
     bool noPoints = true;
-    for (Entity* ntt : scene->GetByTag("pp"))
+    for (EntityPtr ntt : scene->GetByTag("pp"))
     {
       m_patrolPoints.push_back(ntt->m_node->GetTranslation());
       noPoints = false;
@@ -280,7 +287,7 @@ namespace ToolKit
       // Note: State machine does not call TransitionIn() for the first state when Update() is called.
   }
 
-  void EnemyController::AddEnemy(Entity* entity)
+  void EnemyController::AddEnemy(EntityPtr entity)
   {
     m_enemies[entity->GetIdVal()] = new Enemy(entity, this);
   }
@@ -327,7 +334,7 @@ namespace ToolKit
     const float z = (rand() % height) + floorBB.min.z;
     const Vec3 pos = {x, y, z};
 
-    Entity* newEnemyPrefab = GameUtils::EnemyPrefabInstantiate();
+    EntityPtr newEnemyPrefab = GameUtils::EnemyPrefabInstantiate();
     newEnemyPrefab->SetTagVal("enemyPrefab");
     newEnemyPrefab->m_node->SetTranslation(pos);
     AddEnemy(newEnemyPrefab);
