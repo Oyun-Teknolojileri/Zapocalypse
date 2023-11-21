@@ -138,11 +138,15 @@ namespace ToolKit
 
     // turn to the player
     const Vec3 pos =  m_enemy->m_enemyPrefab->m_node->GetTranslation();
-    const Vec3 dir = glm::normalize(g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - pos);
+    Vec3 dir = g_gameGlobals.m_playerController->m_playerPrefab->m_node->GetTranslation() - pos;
+    Vec3 dirNorm = glm::normalize(dir);
     m_enemy->m_enemyPrefab->m_node->SetOrientation(GameUtils::QuatLookAtRH(dir));
 
-    // move to the player
-    m_enemy->m_enemyPrefab->m_node->Translate(dir * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
+    // move to the enemy
+    if (glm::dot(dir, dir) > 25.0) // stop if player is near enough (5m)
+    {
+      m_enemy->m_enemyPrefab->m_node->Translate(dirNorm * g_gameGlobals.m_enemyWalkSpeed * deltaTime);
+    }
 
     // fire projectiles
     static float pastTime = g_gameGlobals.m_enemyProjectileCooldown + 1.0f;
