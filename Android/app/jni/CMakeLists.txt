@@ -26,7 +26,7 @@ if("${TOOLKIT_DIR}" STREQUAL "__tkdir__")
 endif()
 
 # SDL sources are in a subfolder named "SDL"
-set(SDL_DIRECTORY_PATH ${TOOLKIT_DIR}/Dependency/SDL2-2.28.5)
+set(SDL_DIRECTORY_PATH ${TOOLKIT_DIR}/Dependency/SDL2)
 add_subdirectory(${SDL_DIRECTORY_PATH} ${SDL_DIRECTORY_PATH}/build)
 
 # Compilation of companion libraries
