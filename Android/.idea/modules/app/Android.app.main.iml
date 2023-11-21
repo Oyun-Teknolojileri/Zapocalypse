@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../../../../../ToolKit/ToolKit">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../../../ToolKit/ToolKit" type="native-Source-root" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../app/jni">
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/jni" type="native-Source-root" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../../../Codes">
+      <sourceFolder url="file://$MODULE_DIR$/../../../../Codes" type="native-Source-root" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

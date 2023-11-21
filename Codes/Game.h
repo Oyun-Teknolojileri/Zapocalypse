@@ -11,15 +11,17 @@
 
 namespace ToolKit
 {
-  class  Game : public GamePlugin
+  class Game : public GamePlugin
   {
   public:
+    Game() {}
+    virtual ~Game() {}
     virtual void Init(class Main* master);
     virtual void Destroy();
-    virtual void Frame(float deltaTime, class Viewport* viewport);
+    void Frame(float deltaTime, class Viewport* viewport) override;
 
     private:
-    void UpdateCameraPosition();
+    virtual void UpdateCameraPosition();
 
     private:
     EntityPtr m_playerPrefab = nullptr;
