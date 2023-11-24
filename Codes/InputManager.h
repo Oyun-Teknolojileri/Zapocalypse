@@ -2,6 +2,7 @@
 
 #include <ToolKit.h>
 #include <Types.h>
+#include <Dpad.h>
 
 namespace ToolKit
 {
@@ -9,6 +10,7 @@ namespace ToolKit
   {
     public:
 
+    void Init(DpadPtr dpad);
     void Update();
 
     inline bool WDown()
@@ -31,6 +33,18 @@ namespace ToolKit
     {
       return m_leftMouseDown;
     }
+    inline float DpadRadius()
+    {
+      return m_dpad->GetRadius();
+    }
+    inline float DpadX()
+    {
+      return m_dpad->GetDeltaX();
+    }
+    inline float DpadY()
+    {
+      return m_dpad->GetDeltaY();
+    }
 
     private:
     bool m_wDown = false;
@@ -38,5 +52,6 @@ namespace ToolKit
     bool m_aDown = false;
     bool m_dDown = false;
     bool m_leftMouseDown = false;
+    DpadPtr m_dpad = nullptr;  
   };
 }

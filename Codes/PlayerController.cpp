@@ -48,26 +48,33 @@ namespace ToolKit
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
     static const Vec3 right = glm::normalize(Vec3(1.0f, 0.0f, -1.0f));
 
+    const float dpadX = g_gameGlobals.m_inputManager->DpadX() / g_gameGlobals.m_inputManager->DpadRadius();
+    const float dpadY = g_gameGlobals.m_inputManager->DpadY() / g_gameGlobals.m_inputManager->DpadRadius();
+
+    g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * up * dpadY);
+    g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * right * dpadX);
+
+/*
     if (g_gameGlobals.m_inputManager->WDown())
     {
-      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * up);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * up * dpadYScale);
     }
 
-    if (g_gameGlobals.m_inputManager->SDown())
+    if (g_gameGlobals.m_inputManager->SDown() || g_gameGlobals.m_inputManager->DpadY() < 0.0f)
     {
-      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * down);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * down * dpadYScale);
     }
 
-    if (g_gameGlobals.m_inputManager->ADown())
+    if (g_gameGlobals.m_inputManager->ADown() || g_gameGlobals.m_inputManager->DpadX() < 0.0f)
     {
-      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * left);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * left * dpadXScale);
     }
 
-    if (g_gameGlobals.m_inputManager->DDown())
+    if (g_gameGlobals.m_inputManager->DDown() || g_gameGlobals.m_inputManager->DpadX() > 0.0f)
     {
-      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * right);
+      g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * right * dpadXScale);
     }
-
+*/
     return NullSignal;
   }
 

@@ -115,7 +115,11 @@ namespace ToolKit
 
       inline bool IsPlayerMoving()
       {
-        return g_gameGlobals.m_inputManager->WDown() || g_gameGlobals.m_inputManager->SDown() || g_gameGlobals.m_inputManager->ADown() || g_gameGlobals.m_inputManager->DDown();
+        bool dpadDeltaX = fabs(g_gameGlobals.m_inputManager->DpadX()) > 0.001f;
+        bool dpadDeltaY = fabs(g_gameGlobals.m_inputManager->DpadY()) > 0.001f;
+
+        return g_gameGlobals.m_inputManager->WDown() || g_gameGlobals.m_inputManager->SDown() || g_gameGlobals.m_inputManager->ADown() ||
+        g_gameGlobals.m_inputManager->DDown() || dpadDeltaX || dpadDeltaY;
       }
 
       inline bool IsPlayerTryingToShoot()

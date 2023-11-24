@@ -148,7 +148,7 @@
 	</Object>
 	<Object Cl="Camera">
 		<PB>
-			<P t="11" name="Id" v="733373852"/>
+			<P t="11" name="Id" v="7991232112398862070"/>
 			<P t="9" name="Name" v="MainCam"/>
 			<P t="9" name="Tag" v="mainCam"/>
 			<P t="10" name="Visible" v="1"/>
@@ -169,7 +169,7 @@
 			<Ca>
 				<Object Cl="DirectionComponent">
 					<PB>
-						<P t="11" name="Id" v="151458"/>
+						<P t="11" name="Id" v="2539338500103548068"/>
 					</PB>
 					<Component>
 						<DirectionComponent/>
@@ -177,7 +177,7 @@
 				</Object>
 				<Object Cl="MeshComponent">
 					<PB>
-						<P t="11" name="Id" v="151461"/>
+						<P t="11" name="Id" v="15371774458445408143"/>
 						<P t="12" name="Mesh"/>
 						<P t="10" name="CastShadow" v="0"/>
 					</PB>
@@ -186,7 +186,7 @@
 					</Component>
 				</Object>
 			</Ca>
-			<Camera fov="1.570796" aspect="1.688399" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
+			<Camera fov="1.570796" aspect="2.241780" near="0.010000" far="1000.000000" ortographic="0" left="10.000000" right="10.000000" top="10.000000" bottom="10.000000" scale="0.001000"/>
 		</Entity>
 	</Object>
 	<Object Cl="Prefab">

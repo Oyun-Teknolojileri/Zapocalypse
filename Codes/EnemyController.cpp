@@ -163,7 +163,7 @@ namespace ToolKit
         {
           if (hit->GetTagVal() == "player")
           {
-            GetLogger()->WriteConsole(LogType::Command, "Player Hit");
+            //GetLogger()->WriteConsole(LogType::Command, "Player Hit");
           }
         }
       );

@@ -72,9 +72,25 @@ namespace ToolKit
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
     UpdateCameraPosition();
 
-    // Get UI Layer
+    // Get UI Layer & dpad
     m_uiLayer = std::make_shared<UILayer>(LayerPath("TestButton.layer"));
     m_uiLayerAddedToViewport = false;
+    bool dpadFound = false;
+    for (EntityPtr ntt : m_uiLayer->m_scene->GetEntities())
+    {
+      if (ntt->IsA<Dpad>())
+      {
+        g_gameGlobals.m_inputManager->Init(Cast<Dpad>(ntt));
+        dpadFound = true;
+        break;
+      }
+    }
+
+    if (!dpadFound)
+    {
+      m_quit = true;
+      GetLogger()->WriteConsole(LogType::Error, "No Dpad found in UI layer!");
+    }
   }
 
   void Game::Destroy()
@@ -98,6 +114,7 @@ namespace ToolKit
   {
     m_viewport = viewport;
     viewport->AttachCamera(m_mainCam->GetIdVal());
+    bool test = Cast<Camera>(m_mainCam)->IsOrtographic();
 
     if (!m_uiLayerAddedToViewport)
     {

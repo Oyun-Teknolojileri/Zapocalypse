@@ -3,6 +3,11 @@
 
 namespace ToolKit
 {
+  void InputManager::Init(DpadPtr dpad)
+  {
+    m_dpad = dpad;
+  }
+
   void InputManager::Update()
   {
     EventPool& events = Main::GetInstance()->m_eventPool;
