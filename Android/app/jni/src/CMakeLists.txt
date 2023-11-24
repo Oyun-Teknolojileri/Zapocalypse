@@ -28,15 +28,11 @@ set(CMAKE_CXX_STANDARD 17)
 # Creates your game shared library. The name must be the same as the
 # one used for loading in your Kotlin/Java or AndroidManifest.txt files.
 add_library(main SHARED
-        NEWMAIN.cpp
-        #TODO main.cpp
-        #TODO AndroidMain.cpp
+        android_main.cpp
         ${GAME_SOURCES}
         ${UNZIP_SOURCES}
         ${TOOLKIT_SOURCES}) # Include the list of Toolkit sources here
 
-# Searches for a package provided by the game activity dependency
-#TODO find_package(game-activity REQUIRED CONFIG)
 
 # if(ANDROID_ABI STREQUAL armeabi-v7a)
 #   set_target_properties(${TARGET} PROPERTIES COMPILE_FLAGS -mfpu=neon)
@@ -45,12 +41,6 @@ find_package(ZLIB REQUIRED)
 
 # Configure libraries CMake uses to link your target library.
 target_link_libraries(main
-        # The game activity
-        #TODO game-activity::game-activity
-
-        # EGL and other dependent libraries required for drawing
-        # and interacting with Android system
-        #TODO EGL
         GLESv3
         jnigraphics
         android

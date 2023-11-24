@@ -118,8 +118,8 @@
 			<P t="5" name="Color" x="1.000000" y="1.000000" z="1.000000"/>
 			<P t="2" name="Intensity" v="0.800000"/>
 			<P t="10" name="CastShadow" v="1"/>
-			<P t="2" name="ShadowRes" v="2048.000000"/>
-			<P t="3" name="PCFSamples" v="128"/>
+			<P t="2" name="ShadowRes" v="512.000000"/>
+			<P t="3" name="PCFSamples" v="16"/>
 			<P t="2" name="PCFRadius" v="0.003000"/>
 			<P t="2" name="ShadowBias" v="0.280000"/>
 			<P t="2" name="BleedingReduction" v="0.375000"/>

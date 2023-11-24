@@ -6,7 +6,6 @@
 	<alpha name="1.000000"/>
 	<metallic name="0.068000"/>
 	<roughness name="0.860000"/>
-	<materialType name="1"/>
 	<renderState cullMode="2" depthTest="1" depthFunc="513" blendFunction="0" alphaMaskTreshold="0.001000" drawType="4"/>
 </material>
 

@@ -4,6 +4,7 @@
 
 #include <DirectionComponent.h>
 #include <Scene.h>
+#include <Viewport.h>
 
 namespace ToolKit
 {
@@ -70,10 +71,16 @@ namespace ToolKit
     // Attach the camera to the player prefab
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
     UpdateCameraPosition();
+
+    // Get UI Layer
+    m_uiLayer = std::make_shared<UILayer>(LayerPath("TestButton.layer"));
+    m_uiLayerAddedToViewport = false;
   }
 
   void Game::Destroy()
   {
+    GetUIManager()->RemoveLayer(m_viewport->m_viewportId, m_uiLayer->m_id);
+
     // Remove direction component from player
     g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->GetIdVal());
 
@@ -87,12 +94,16 @@ namespace ToolKit
     delete this;
   }
 
-  void Game::Frame(float deltaTime, class Viewport* viewport)
+  void Game::Frame(float deltaTime, Viewport* viewport)
   {
-    // TODOD debug
-    ScenePtr s = g_gameGlobals.m_currentScene;
-
+    m_viewport = viewport;
     viewport->AttachCamera(m_mainCam->GetIdVal());
+
+    if (!m_uiLayerAddedToViewport)
+    {
+      m_uiLayerAddedToViewport = true;
+      GetUIManager()->AddLayer(viewport->m_viewportId, m_uiLayer);
+    }
 
     GameUtils::GameViewport = viewport;
     GameUtils::SceneFloorY = m_floor->m_node->GetTranslation().y;

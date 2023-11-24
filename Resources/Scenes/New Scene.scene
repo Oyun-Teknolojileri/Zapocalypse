@@ -1,0 +1,3 @@
+<S version="v0.4.5" name="New Scene"/>
+<PostProcessing TonemappingEnabled="1" TonemapperMode="1" EnableBloom="1" BloomIntensity="1.000000" BloomThreshold="1.000000" BloomIterationCount="5" GammaCorrectionEnabled="1" Gamma="2.200000" SSAOEnabled="1" SSAORadius="0.500000" SSAOBias="0.025000" SSAOKernelSize="0" DepthOfFieldEnabled="0" FocusPoint="10.000000" FocusScale="5.000000" DofQuality="1" FXAAEnabled="0"/>
+

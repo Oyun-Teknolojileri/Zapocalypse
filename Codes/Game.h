@@ -7,7 +7,7 @@
 
 #include <ToolKit.h>
 #include <Plugin.h>
-#include <SceneRenderPath.h>   
+#include <UIManager.h>
 
 namespace ToolKit
 {
@@ -27,6 +27,10 @@ namespace ToolKit
     EntityPtr m_playerPrefab = nullptr;
     EntityPtr m_mainCam = nullptr;
     EntityPtr m_floor = nullptr;
+
+    UILayerPtr m_uiLayer = nullptr;
+    bool m_uiLayerAddedToViewport = false;
+    class Viewport* m_viewport = nullptr;
   };
 }
 
