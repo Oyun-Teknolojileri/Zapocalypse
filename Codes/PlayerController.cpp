@@ -48,8 +48,8 @@ namespace ToolKit
     static const Vec3 left = glm::normalize(Vec3(-1.0f, 0.0f, 1.0f));
     static const Vec3 right = glm::normalize(Vec3(1.0f, 0.0f, -1.0f));
 
-    const float dpadX = g_gameGlobals.m_inputManager->DpadX() / g_gameGlobals.m_inputManager->DpadRadius();
-    const float dpadY = g_gameGlobals.m_inputManager->DpadY() / g_gameGlobals.m_inputManager->DpadRadius();
+    const float dpadX = g_gameGlobals.m_inputManager->DpadX();
+    const float dpadY = g_gameGlobals.m_inputManager->DpadY();
 
     g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * up * dpadY);
     g_gameGlobals.m_playerController->m_playerPrefab->m_node->Translate(speed * right * dpadX);

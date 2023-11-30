@@ -333,13 +333,15 @@ namespace ToolKit
         if (e->m_type == Event::EventType::Mouse)
         {
           MouseEvent* me = static_cast<MouseEvent*>(e);
-          if (me->m_action == EventAction::Move)
-          {
             m_lastMousePosRelContentArea.x = me->absolute[0];
             m_lastMousePosRelContentArea.y = me->absolute[1];
-            break;
-          }
         }
+          if (e->m_type == Event::EventType::Touch)
+          {
+              TouchEvent* te = static_cast<TouchEvent*>(e);
+              m_lastMousePosRelContentArea.x = te->absolute[0] * m_wndContentAreaSize.x;
+              m_lastMousePosRelContentArea.y = te->absolute[1] * m_wndContentAreaSize.y;
+          }
       }
     }
   };
@@ -377,6 +379,11 @@ namespace ToolKit
     Main::SetProxy(g_proxy);
 
     g_proxy->PreInit();
+    auto androidWriteConsoleFn = [](LogType logType, const String& msg)
+    {
+      ANDROID_LOG("%s", msg.c_str());
+    };
+    GetLogger()->SetWriteConsoleFn(androidWriteConsoleFn);
 
     g_proxy->m_engineSettings->Window.Height = 2400;
     g_proxy->m_engineSettings->Window.Width = 1080;
@@ -389,6 +396,8 @@ namespace ToolKit
 
   void Init()
   {
+    g_proxy->m_engineSettings->Window.Width = 2400;
+    g_proxy->m_engineSettings->Window.Height = 1080;
     g_engineSettings = g_proxy->m_engineSettings;
 
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER) < 0)
@@ -425,6 +434,11 @@ namespace ToolKit
       }
       else
       {
+        int w,h;
+        SDL_GetWindowSize(g_window,&w,&h);
+        g_engineSettings->Window.Width = w;
+        g_engineSettings->Window.Height = h;
+
         g_context = SDL_GL_CreateContext(g_window);
         if (g_context == nullptr)
         {
@@ -571,7 +585,7 @@ namespace ToolKit
         SDL_GL_SwapWindow(g_window);
 
           float frameEnd = GetMilliSeconds();
-          ANDROID_LOG("%f", frameEnd - frameStart);
+          //ANDROID_LOG("%f", frameEnd - frameStart);
 
         timer.frameCount++;
         timer.timeAccum += deltaTime;

@@ -6,7 +6,7 @@
 			<P t="9" name="Tag" v=""/>
 			<P t="10" name="Visible" v="1"/>
 			<P t="10" name="TransformLock" v="0"/>
-			<P t="14" name="Size" x="512.000000" y="1024.000000"/>
+			<P t="14" name="Size" x="2400.000000" y="1080.000000"/>
 			<P t="14" name="PivotOffset" x="0.000000" y="0.000000"/>
 			<P t="13" name="Material">
 				<ResourceRef Class="Material" File="Resource_18.material"/>
@@ -49,56 +49,6 @@
 			</Surface>
 		</Entity>
 	</Object>
-	<Object Cl="Dpad">
-		<PB>
-			<P t="11" name="Id" v="16770807334869529336"/>
-			<P t="9" name="Name" v="Dpad"/>
-			<P t="9" name="Tag" v=""/>
-			<P t="10" name="Visible" v="1"/>
-			<P t="10" name="TransformLock" v="0"/>
-			<P t="14" name="Size" x="100.000000" y="100.000000"/>
-			<P t="14" name="PivotOffset" x="0.500000" y="0.500000"/>
-			<P t="13" name="Material">
-				<ResourceRef Class="Material" File="DpadMat.material"/>
-			</P>
-			<P t="18" name="UpdateSizeFromTexture"/>
-			<P t="2" name="DpadRadius" v="100.000000"/>
-		</PB>
-		<Entity pi="9853997664958137130">
-			<N is="0">
-				<T x="252.500092" y="227.500015" z="0.000000"/>
-				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
-				<S x="1.000000" y="1.000000" z="1.000000"/>
-			</N>
-			<Ca>
-				<Object Cl="MeshComponent">
-					<PB>
-						<P t="11" name="Id" v="3753060785666181817"/>
-						<P t="12" name="Mesh"/>
-						<P t="10" name="CastShadow" v="0"/>
-					</PB>
-					<Component>
-						<MeshComponent/>
-					</Component>
-				</Object>
-				<Object Cl="MaterialComponent">
-					<PB>
-						<P t="11" name="Id" v="2707926041194916911"/>
-					</PB>
-					<Component>
-						<MaterialComponent MaterialCount="1">
-							<0>
-								<ResourceRef Class="Material" File="DpadMat.material"/>
-							</0>
-						</MaterialComponent>
-					</Component>
-				</Object>
-			</Ca>
-			<Surface>
-				<Anchor ratios0="0.499024" offsets0="-46.500366" ratios1="0.500976" offsets1="-53.499619" ratios2="0.774414" offsets2="-53.000061" ratios3="0.225586" offsets3="-46.999939"/>
-			</Surface>
-		</Entity>
-	</Object>
 	<Object Cl="Button">
 		<PB>
 			<P t="11" name="Id" v="16489292983765760016"/>
@@ -121,7 +71,7 @@
 		</PB>
 		<Entity pi="9853997664958137130">
 			<N is="1">
-				<T x="239.226761" y="848.883850" z="0.000000"/>
+				<T x="836.497681" y="882.885559" z="0.000000"/>
 				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
 				<S x="1.000000" y="1.000000" z="1.000000"/>
 			</N>
@@ -150,8 +100,58 @@
 				</Object>
 			</Ca>
 			<Surface>
-				<Anchor ratios0="0.473895" offsets0="-39.952637" ratios1="0.526105" offsets1="-60.047363" ratios2="0.161200" offsets2="-53.407486" ratios3="0.838800" offsets3="-46.592499"/>
+				<Anchor ratios0="0.350522" offsets0="-36.824890" ratios1="0.649478" offsets1="-63.175110" ratios2="0.170314" offsets2="-54.755676" ratios3="0.829686" offsets3="-45.244324"/>
 				<Button/>
+			</Surface>
+		</Entity>
+	</Object>
+	<Object Cl="Dpad">
+		<PB>
+			<P t="11" name="Id" v="5050584629326693437"/>
+			<P t="9" name="Name" v="dpad"/>
+			<P t="9" name="Tag" v=""/>
+			<P t="10" name="Visible" v="1"/>
+			<P t="10" name="TransformLock" v="0"/>
+			<P t="14" name="Size" x="100.000000" y="100.000000"/>
+			<P t="14" name="PivotOffset" x="0.500000" y="0.500000"/>
+			<P t="13" name="Material">
+				<ResourceRef Class="Material" File="Resource_20.material"/>
+			</P>
+			<P t="18" name="UpdateSizeFromTexture"/>
+			<P t="2" name="DpadRadius" v="50.000000"/>
+		</PB>
+		<Entity pi="9853997664958137130">
+			<N is="0">
+				<T x="813.333374" y="348.333374" z="0.000000"/>
+				<R x="0.000000" y="0.000000" z="0.000000" w="1.000000"/>
+				<S x="2.000000" y="2.000000" z="2.000000"/>
+			</N>
+			<Ca>
+				<Object Cl="MaterialComponent">
+					<PB>
+						<P t="11" name="Id" v="16225962768437637930"/>
+					</PB>
+					<Component>
+						<MaterialComponent MaterialCount="1">
+							<0>
+								<ResourceRef Class="Material" File="Resource_20.material"/>
+							</0>
+						</MaterialComponent>
+					</Component>
+				</Object>
+				<Object Cl="MeshComponent">
+					<PB>
+						<P t="11" name="Id" v="7575228485950448193"/>
+						<P t="12" name="Mesh"/>
+						<P t="10" name="CastShadow" v="0"/>
+					</PB>
+					<Component>
+						<MeshComponent/>
+					</Component>
+				</Object>
+			</Ca>
+			<Surface>
+				<Anchor ratios0="0.338542" offsets0="-92.552673" ratios1="0.661458" offsets1="-107.447327" ratios2="0.670573" offsets2="-99.166443" ratios3="0.329427" offsets3="-100.833496"/>
 			</Surface>
 		</Entity>
 	</Object>

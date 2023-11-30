@@ -95,7 +95,7 @@ namespace ToolKit
 
   void Game::Destroy()
   {
-    GetUIManager()->RemoveLayer(m_viewport->m_viewportId, m_uiLayer->m_id);
+    GetUIManager()->RemoveLayer(GameUtils::GameViewport->m_viewportId, m_uiLayer->m_id);
 
     // Remove direction component from player
     g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->GetIdVal());
@@ -112,7 +112,6 @@ namespace ToolKit
 
   void Game::Frame(float deltaTime, Viewport* viewport)
   {
-    m_viewport = viewport;
     viewport->AttachCamera(m_mainCam->GetIdVal());
     bool test = Cast<Camera>(m_mainCam)->IsOrtographic();
 

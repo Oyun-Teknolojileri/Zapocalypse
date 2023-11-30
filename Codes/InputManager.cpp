@@ -57,6 +57,7 @@ namespace ToolKit
           }
         }
       }
+#ifndef __ANDROID__
       else if (event->m_action == EventAction::LeftClick)
       {
         MouseEvent *me = static_cast<MouseEvent *>(event);
@@ -69,6 +70,20 @@ namespace ToolKit
           m_leftMouseDown = false;
         }
       }
+#else
+     else if (event->m_action == EventAction::Touch)
+     {
+        TouchEvent *te = static_cast<TouchEvent *>(event);
+        if (!te->m_release)
+        {
+          m_leftMouseDown = true;
+        }
+        else
+        {
+          m_leftMouseDown = false;
+        }
+     }
+#endif
     }
   }
 }

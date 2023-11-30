@@ -30,7 +30,6 @@ namespace ToolKit
 
     UILayerPtr m_uiLayer = nullptr;
     bool m_uiLayerAddedToViewport = false;
-    class Viewport* m_viewport = nullptr;
   };
 }
 
