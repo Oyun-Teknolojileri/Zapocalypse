@@ -140,7 +140,7 @@ namespace ToolKit
           {
             constexpr float damage = 150.0f;
             g_gameGlobals.m_enemyController->HitEnemy(hit->Parent()->GetIdVal(), damage);
-            GetLogger()->WriteConsole(LogType::Command, "Enemy Hit");
+            GetLogger()->WriteTKConsole(LogType::Command, "Enemy Hit");
           }
         }
       );

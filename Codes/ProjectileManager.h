@@ -40,6 +40,7 @@ namespace ToolKit
     void Reset(ScenePtr newScene);
     void AddToProjectileIgnoreList(ULongID id);
     void RemoveFromProjectileIgnoreList(ULongID id);
+    inline int GetActiveProjectileCount() { return m_activeProjectileCount; }
 
     private:
     ProjectileManager() {};
@@ -51,6 +52,7 @@ namespace ToolKit
     // A memory pool for projectile objects
     static constexpr unsigned MAX_PROJECTILES = 128;
     Projectile m_projectilePool[MAX_PROJECTILES];
+    int m_activeProjectileCount = 0;
 
     // For indices, -1 means end of the list
     int m_availableProjectileIndex = 0;

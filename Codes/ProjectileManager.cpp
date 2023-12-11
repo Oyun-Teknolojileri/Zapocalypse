@@ -70,6 +70,8 @@ namespace ToolKit
     // Add projectile to the scene
     m_scene->AddEntity(projectile.entity);
 
+    m_activeProjectileCount++;
+
     return true;
   }
 
@@ -193,5 +195,7 @@ namespace ToolKit
 
     // Remove projectile from scene
     m_scene->RemoveEntity(m_projectilePool[index].entity->GetIdVal());
+
+    m_activeProjectileCount--;
   }
 }

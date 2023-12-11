@@ -6,15 +6,13 @@
 #include <Scene.h>
 #include <Viewport.h>
 
+ToolKit::Game Self;
+extern "C" TK_PLUGIN_API ToolKit::Game* TK_STDCAL GetInstance() { return &Self; }
+
 namespace ToolKit
 {
-
-  extern "C" TK_GAME_API ToolKit::Game* TK_STDCAL CreateInstance() { return new ToolKit::Game(); }
-
-  void Game::Init(Main* master)
+  void Game::OnGameStart()
   {
-    Main::SetProxy(master);
-
     // Scene
     g_gameGlobals.m_currentScene = GetSceneManager()->Create<Scene>(ScenePath("MainScene.scene"));
     GetSceneManager()->SetCurrentScene(g_gameGlobals.m_currentScene);
@@ -27,6 +25,11 @@ namespace ToolKit
 
     // Floor entity
     m_floor = g_gameGlobals.m_currentScene->GetFirstByTag("floor");
+    if (!m_floor)
+    {
+      m_currentState = PluginState::Stop;
+      return;
+    }
 
     // Floor border coordinates
     // Note: If the floor size is changable, update this variable every frame
@@ -34,6 +37,12 @@ namespace ToolKit
 
     // Player prefab
     m_playerPrefab = g_gameGlobals.m_currentScene->GetFirstByTag("playerPrefab");
+    if (!m_playerPrefab)
+    {
+      m_currentState = PluginState::Stop;
+      return;
+    }
+
     m_playerPrefab->AddComponent<DirectionComponent>(); // Add direction component
     // Snap player to floor
     Vec3 playerPos = m_playerPrefab->m_node->GetTranslation();
@@ -70,6 +79,11 @@ namespace ToolKit
 
     // Attach the camera to the player prefab
     m_mainCam = GetSceneManager()->GetCurrentScene()->GetFirstByTag("mainCam");
+    if (!m_mainCam)
+    {
+      m_currentState = PluginState::Stop;
+      return;
+    }
     UpdateCameraPosition();
 
     // Get UI Layer & dpad
@@ -88,40 +102,57 @@ namespace ToolKit
 
     if (!dpadFound)
     {
-      m_quit = true;
-      GetLogger()->WriteConsole(LogType::Error, "No Dpad found in UI layer!");
+      m_currentState = PluginState::Stop;
+      GetLogger()->WriteTKConsole(LogType::Error, "No Dpad found in UI layer!");
     }
   }
 
   void Game::Destroy()
   {
-    GetUIManager()->RemoveLayer(GameUtils::GameViewport->m_viewportId, m_uiLayer->m_id);
+    if (GameUtils::GameViewport != nullptr && m_uiLayer != nullptr)
+    {
+      GetUIManager()->RemoveLayer(GameUtils::GameViewport->m_viewportId, m_uiLayer->m_id);
+    }
 
     // Remove direction component from player
-    g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->GetIdVal());
+    if (g_gameGlobals.m_playerController != nullptr)
+    {
+        if (g_gameGlobals.m_playerController->m_playerPrefab != nullptr)
+        {
+            g_gameGlobals.m_playerController->m_playerPrefab->RemoveComponent(g_gameGlobals.m_playerController->m_playerPrefab->GetComponent<DirectionComponent>()->GetIdVal());
+        }
+    }
 
     g_gameGlobals.m_playerController = nullptr;
     g_gameGlobals.m_inputManager = nullptr;
     g_gameGlobals.m_projectileManager = nullptr;
     g_gameGlobals.m_enemyController = nullptr;
 
-    g_gameGlobals.m_currentScene->Destroy(false);
-
-    delete this;
+    if (g_gameGlobals.m_currentScene != nullptr)
+    {
+        //g_gameGlobals.m_currentScene->Destroy(false);
+    }
   }
 
-  void Game::Frame(float deltaTime, Viewport* viewport)
+  void Game::Frame(float deltaTime)
   {
-    viewport->AttachCamera(m_mainCam->GetIdVal());
+    if (m_firstFrame)
+    {
+      OnGameStart();
+
+      m_firstFrame = false;
+    }
+
+    m_viewport->AttachCamera(m_mainCam->GetIdVal());
     bool test = Cast<Camera>(m_mainCam)->IsOrtographic();
 
     if (!m_uiLayerAddedToViewport)
     {
       m_uiLayerAddedToViewport = true;
-      GetUIManager()->AddLayer(viewport->m_viewportId, m_uiLayer);
+      GetUIManager()->AddLayer(m_viewport->m_viewportId, m_uiLayer);
     }
 
-    GameUtils::GameViewport = viewport;
+    GameUtils::GameViewport = m_viewport;
     GameUtils::SceneFloorY = m_floor->m_node->GetTranslation().y;
 
     g_gameGlobals.m_inputManager->Update();

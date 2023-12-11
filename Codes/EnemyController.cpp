@@ -163,7 +163,7 @@ namespace ToolKit
         {
           if (hit->GetTagVal() == "player")
           {
-            //GetLogger()->WriteConsole(LogType::Command, "Player Hit");
+            //GetLogger()->WriteTKConsole(LogType::Command, "Player Hit");
           }
         }
       );
@@ -213,7 +213,7 @@ namespace ToolKit
   {
     m_health -= damageAmount;
 
-    GetLogger()->WriteConsole(LogType::Warning, "HP: %f.", m_health);
+    GetLogger()->WriteTKConsole(LogType::Warning, "HP: %f.", m_health);
 
     if (m_health <= 0.0f)
     {
@@ -223,7 +223,7 @@ namespace ToolKit
 
   void Enemy::Die()
   {
-    GetLogger()->WriteConsole(LogType::Warning, "Die");
+    GetLogger()->WriteTKConsole(LogType::Warning, "Die");
     m_enemyController->KillEnemy(m_enemyPrefab->GetIdVal());
   }
 
@@ -255,7 +255,7 @@ namespace ToolKit
     }
     if (noPoints)
     {
-      GetLogger()->WriteConsole(LogType::Warning, "No patrol points found in the scene! Using default two points.");
+      GetLogger()->WriteTKConsole(LogType::Warning, "No patrol points found in the scene! Using default two points.");
       m_patrolPoints.push_back(ZERO);
       m_patrolPoints.push_back(Vec3(5.0f, 0.75f, 5.0f));
     }
