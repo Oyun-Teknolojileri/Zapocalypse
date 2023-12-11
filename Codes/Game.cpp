@@ -111,7 +111,7 @@ namespace ToolKit
   {
     if (GameUtils::GameViewport != nullptr && m_uiLayer != nullptr)
     {
-      GetUIManager()->RemoveLayer(GameUtils::GameViewport->m_viewportId, m_uiLayer->m_id);
+      //GetUIManager()->RemoveLayer(GameUtils::GameViewport->m_viewportId, m_uiLayer->m_id);
     }
 
     // Remove direction component from player
