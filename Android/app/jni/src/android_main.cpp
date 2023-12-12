@@ -469,6 +469,8 @@ namespace ToolKit
           g_game = new Game();
           g_game->Init(g_proxy);
 
+          g_game->m_currentState = PluginState::Running;
+
           InitRender();
         }
       }
@@ -530,11 +532,11 @@ namespace ToolKit
     static CustomTimer timer;
     SDL_Event sdlEvent;
 
-    while (g_running && !g_game->m_quit)
+    while (g_game->m_currentState != PluginState::Stop && g_running)
     {
-      Renderer::FEEDUNIFORMSDURATION = 0.0;
+      g_game->SetViewport(g_viewport);
 
-        float frameStart = GetMilliSeconds();
+      float frameStart = GetMilliSeconds();
 
       while (SDL_PollEvent(&sdlEvent))
       {
@@ -556,7 +558,7 @@ namespace ToolKit
 
         g_viewport->Update(deltaTime);
 
-        g_game->Frame(deltaTime, g_viewport);
+        g_game->Frame(deltaTime);
 
         SceneRender(g_viewport);
 
